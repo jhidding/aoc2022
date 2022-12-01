@@ -1,5 +1,6 @@
 # Advent of Code 2022
 [![Entangled badge](https://img.shields.io/badge/entangled-Use%20the%20source!-%2300aeff)](https://entangled.github.io/)
+[![Documentation](https://github.com/jhidding/aoc2022/actions/workflows/documentation.yml/badge.svg)](https://github.com/jhidding/aoc2022/actions/workflows/documentation.yml)
 
 These are my solutions to Advent of Code 2022.
 
