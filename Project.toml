@@ -1,0 +1,7 @@
+name = "AOC2022"
+uuid = "a87aa1e3-eed6-4628-b0e0-c946fc5333f8"
+authors = ["Johan Hidding <j.hidding@esciencecenter.nl>"]
+version = "0.1.0"
+
+[deps]
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
