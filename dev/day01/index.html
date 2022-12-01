@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 01: Calorie Counting · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li class="is-active"><a class="tocitem" href>Day 01: Calorie Counting</a><ul class="internal"><li><a class="tocitem" href="#Rust"><span>Rust</span></a></li><li><a class="tocitem" href="#Julia"><span>Julia</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 01: Calorie Counting</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 01: Calorie Counting</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-01:-Calorie-Counting"><a class="docs-heading-anchor" href="#Day-01:-Calorie-Counting">Day 01: Calorie Counting</a><a id="Day-01:-Calorie-Counting-1"></a><a class="docs-heading-anchor-permalink" href="#Day-01:-Calorie-Counting" title="Permalink"></a></h1><p>Adding up numbers! I solved today&#39;s exercise in both Julia and Rust, as I&#39;m still unsure in what language to do the rest. Julia gives beautiful clutter free code, Rust gives the nice guarantees of a decent type system. </p><h2 id="Rust"><a class="docs-heading-anchor" href="#Rust">Rust</a><a id="Rust-1"></a><a class="docs-heading-anchor-permalink" href="#Rust" title="Permalink"></a></h2><p>The first thing we need to do (in any Rust project) is to define an <code>Error</code> type, and a specialised <code>Result</code>. It is idiomatic to have specialised <code>Result</code> this way. A lot of functions in Rust return their own kind of <code>Result</code>, which we can <code>map_err</code> to ours. This way we can collect errors from different sources. For now, we just have input errors.</p><div class="noweb-label">file:<i>src/aoc.rs</i></div><pre><code class="language- rust hljs">#[derive(Debug)]
+pub enum Error {
+    Input(String)
+}
+
+pub type Result&lt;T&gt; = core::result::Result&lt;T, Error&gt;;
+
+pub fn input_error&lt;T&gt;(err:T) -&gt; Error where T: core::fmt::Debug {
+    Error::Input(format!(&quot;{:?}&quot;, err))
+}</code></pre><p>Our input has lists of integers that are separated by an empty line. We store this in a <code>Vec&lt;Vec&lt;u32&gt;&gt;</code>.</p><div class="noweb-label">⪡read-lists-of-int⪢≣</div><pre><code class="language- rust hljs">fn read_input() -&gt; Result&lt;Vec&lt;Vec&lt;u32&gt;&gt;&gt; {
+    let mut v = Vec::&lt;u32&gt;::new();
+    let mut result = Vec::new();
+    for line in io::stdin().lines() {
+        let l = line.map_err(input_error)?;
+        if l.is_empty() {
+            result.push(v);
+            v = Vec::&lt;u32&gt;::new();
+        } else {
+            v.push(l.parse().map_err(input_error)?);
+        }
+    }
+    if !v.is_empty() {
+        result.push(v);
+    }
+    Ok(result)
+}</code></pre><p>Note how smart Rust is here. When we call <code>result.push(v)</code> the vector <code>v</code> is <strong>moved</strong> into the result vector. After that the contents of <code>v</code> are no longer accessible through <code>v</code>. This is Ok though, since we immediately construct a new vector to continue with.</p><p>To compute the sums of each input vector, I find the syntax a bit wordy.</p><div class="noweb-label">file:<i>src/day01.rs</i></div><pre><code class="language- rust hljs">mod aoc;
+
+use crate::aoc::{Error,Result,input_error};
+use std::io;
+
+&lt;&lt;read-lists-of-int&gt;&gt;
+
+fn main() -&gt; Result&lt;()&gt; {
+    let input = read_input()?;
+    let mut sums: Vec&lt;u32&gt; = input.iter().map(|x| { x.iter().sum::&lt;u32&gt;() }).collect();
+
+    let part1 = sums.iter().max().ok_or(Error::Input(&quot;Empty input&quot;.to_string()))?;
+    println!(&quot;Part 1: {}&quot;, part1);
+
+    sums.sort();
+    let part2: u32 = sums[sums.len()-3..].iter().sum();
+    println!(&quot;Part 2: {}&quot;, part2);
+    Ok(())
+}</code></pre><h2 id="Julia"><a class="docs-heading-anchor" href="#Julia">Julia</a><a id="Julia-1"></a><a class="docs-heading-anchor-permalink" href="#Julia" title="Permalink"></a></h2><p>In Julia I was able to write a bit more abstract code from the get-go. This should also be possible in Rust, but it was harder to think about all the traits. So we have a generic function for splitting an iterable into chunks:</p><div class="noweb-label">⪡function-split-on⪢≣</div><pre><code class="language- julia hljs">function split_on(lst, sep)
+    Channel() do channel
+        v = []
+        for item in lst
+            if item == sep
+                put!(channel, v)
+                v = []
+            else
+                push!(v, item)
+            end
+        end
+        if !isempty(v)
+            put!(channel, v)
+        end
+    end
+end</code></pre><p>Then the rest of the program follows.</p><div class="noweb-label">file:<i>src/day01.jl</i></div><pre><code class="language- julia hljs">module Day01
+
+export main
+
+&lt;&lt;function-split-on&gt;&gt;
+
+function read_input(io::IO=stdin)
+    map(sub -&gt; parse.(Int, sub), split_on(readlines(io), &quot;&quot;))
+end
+
+function main(io::IO=stdin)
+    input = read_input(io)
+    part1 = maximum(sum.(input))
+    println(&quot;Part 1: $part1&quot;)
+    part2 = sum(sort(sum.(input))[end-3:end])
+    println(&quot;Part 2: $part2&quot;)
+end
+
+end  # module</code></pre><pre><code class="language-julia hljs">@day 01</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: 70720
+Part 2: 273394</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Advent of Code 2022</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 1 December 2022 18:59">Thursday 1 December 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
