@@ -34,3 +34,8 @@ end
 
 end
 ```
+
+```@example
+using AOC2022  # hide
+@day 2
+```
