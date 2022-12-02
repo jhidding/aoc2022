@@ -1,69 +1,39 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 02: Rock Paper Scissors · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li class="is-active"><a class="tocitem" href>Day 02: Rock Paper Scissors</a><ul class="internal"><li><a class="tocitem" href="#Rust"><span>Rust</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 02: Rock Paper Scissors</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 02: Rock Paper Scissors</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-02:-Rock-Paper-Scissors"><a class="docs-heading-anchor" href="#Day-02:-Rock-Paper-Scissors">Day 02: Rock Paper Scissors</a><a id="Day-02:-Rock-Paper-Scissors-1"></a><a class="docs-heading-anchor-permalink" href="#Day-02:-Rock-Paper-Scissors" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day02.jl</i></div><pre><code class="language- julia hljs">module Day02
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 02: Rock Paper Scissors · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li class="is-active"><a class="tocitem" href>Day 02: Rock Paper Scissors</a><ul class="internal"><li><a class="tocitem" href="#Julia"><span>Julia</span></a></li><li><a class="tocitem" href="#Rust"><span>Rust</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 02: Rock Paper Scissors</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 02: Rock Paper Scissors</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-02:-Rock-Paper-Scissors"><a class="docs-heading-anchor" href="#Day-02:-Rock-Paper-Scissors">Day 02: Rock Paper Scissors</a><a id="Day-02:-Rock-Paper-Scissors-1"></a><a class="docs-heading-anchor-permalink" href="#Day-02:-Rock-Paper-Scissors" title="Permalink"></a></h1><p>I had a longer solution in Julia, but then I started thinking about tricks in modular arithmetic, and came up with this:</p><h2 id="Julia"><a class="docs-heading-anchor" href="#Julia">Julia</a><a id="Julia-1"></a><a class="docs-heading-anchor-permalink" href="#Julia" title="Permalink"></a></h2><div class="noweb-label">file:<i>src/day02.jl</i></div><pre><code class="language- julia hljs">module Day02
 
-@enum RPS Rock=0 Paper=1 Scissors=2
-
-to_win_against(a::RPS) = RPS(mod(Int(a) + 1, 3))
-to_lose_against(a::RPS) = RPS(mod(Int(a) - 1, 3))
-to_draw_against(a::RPS) = a
-
-Base.:&gt;(a::RPS, b::RPS) = a == to_win_against(b)
-score(a::RPS, b::RPS) = Int(b) + 1 + (a &gt; b ? 0 : (b &gt; a ? 6 : 3))
-score(game::Vector{Tuple{RPS,RPS}}) = sum(map(round-&gt;score(round...), game))
-
-read_input(io::IO) = [(line[1], line[3]) for line in readlines(io)]
+read_input(io::IO) = [(line[1]-&#39;A&#39;, line[3]-&#39;X&#39;) for line in readlines(io)]
+score_1((a, b)::Tuple{Int,Int}) = mod(b - a + 1, 3) * 3 + b + 1
+score_2((a, b)::Tuple{Int,Int}) = b * 3 + mod(a + b - 1, 3) + 1
 
 function main(io::IO)
     input = read_input(io)
-    abc = Dict(&#39;A&#39; =&gt; Rock, &#39;B&#39; =&gt; Paper, &#39;C&#39; =&gt; Scissors)
-    xyz1 = Dict(&#39;X&#39; =&gt; Rock, &#39;Y&#39; =&gt; Paper, &#39;Z&#39; =&gt; Scissors)
-    game1 = [(abc[a], xyz1[b]) for (a,b) in input]
-    println(&quot;Part 1: $(score(game1))&quot;)
-
-    xyz2 = Dict(&#39;X&#39; =&gt; to_lose_against, &#39;Y&#39; =&gt; to_draw_against, &#39;Z&#39; =&gt; to_win_against)
-    game2 = [(abc[a], xyz2[b](abc[a])) for (a,b) in input]
-    println(&quot;Part 2: $(score(game2))&quot;)
+    println(&quot;Part 1: $(sum(score_1.(input)))&quot;)
+    println(&quot;Part 2: $(sum(score_2.(input)))&quot;)
 end
 
 end</code></pre><pre><code class="language-julia hljs">@day 2</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: 8392
-Part 2: 10116</code></pre><h2 id="Rust"><a class="docs-heading-anchor" href="#Rust">Rust</a><a id="Rust-1"></a><a class="docs-heading-anchor-permalink" href="#Rust" title="Permalink"></a></h2><p>For the rustic solution, I did away with any enums and just used <code>u8</code>.</p><div class="noweb-label">file:<i>src/day02.rs</i></div><pre><code class="language- rust hljs">mod aoc;
+Part 2: 10116</code></pre><p>Everything will be explained for the rustic version.</p><h2 id="Rust"><a class="docs-heading-anchor" href="#Rust">Rust</a><a id="Rust-1"></a><a class="docs-heading-anchor-permalink" href="#Rust" title="Permalink"></a></h2><p>For the rustic solution, I did away with any enums and just used <code>u8</code>. I figured out that we can use some modular arithmetic to find the desired choice for rock, paper or scissors. The following equations should all be read modulo 3. </p><table><tr><th style="text-align: right">R/P/S</th><th style="text-align: right">value</th></tr><tr><td style="text-align: right">Rock</td><td style="text-align: right">0</td></tr><tr><td style="text-align: right">Paper</td><td style="text-align: right">1</td></tr><tr><td style="text-align: right">Scissors</td><td style="text-align: right">2</td></tr></table><p>Let&#39;s call the two choices <span>$a$</span> and <span>$b$</span>, then <span>$a$</span> wins if <span>$a = (b + 1)$</span>, since paper beats rock, scissors beats papers and rock beats scissors.</p><p>We can also compute the score using modular arithmetic. Look at <span>$(b - a + 1)$</span>; this will say <span>$0$</span> if <span>$a$</span> won, <span>$1$</span> if it&#39;s a draw, and <span>$2$</span> if <span>$b$</span> won. Since I&#39;m computing on unsigned values I need to make sure that all values remain positive (you can add multiples of 3 for free), so this becomes <span>$(4 + b - a)$</span>:</p><div class="noweb-label">⪡day02-compute-scores⪢≣</div><pre><code class="language- rust hljs">fn score_part_1((a, b): (u8,u8)) -&gt; u32
+    { ((4+b-a)%3 * 3 + b + 1) as u32 }</code></pre><p>For the second part, we may say <span>$b \to (a + b + 2)$</span>. We can see this as follows: if we need to win, we need to be exactly <span>$b = (a+1)$</span>, if we need to draw <span>$b = a = (a+0)$</span>, and to lose <span>$b = (a-1) = (a+2)$</span>. So we have:</p><table><tr><th style="text-align: right">code</th><th style="text-align: right">win lose or draw</th><th style="text-align: right">value</th></tr><tr><td style="text-align: right">0</td><td style="text-align: right">lose</td><td style="text-align: right"><span>$a + 2$</span></td></tr><tr><td style="text-align: right">1</td><td style="text-align: right">draw</td><td style="text-align: right"><span>$a + 0$</span></td></tr><tr><td style="text-align: right">2</td><td style="text-align: right">win</td><td style="text-align: right"><span>$a + 1$</span></td></tr></table><p>If we substitute that into our previous formula for the score, the <span>$(4 + b - a)$</span> simplifies to simply <span>$b$</span>.</p><div class="noweb-label">⪡day02-compute-scores⪢⊞</div><pre><code class="language- rust hljs">fn score_part_2((a, b): (u8,u8)) -&gt; u32
+    { (b*3 + (a+b+2)%3 + 1) as u32 }</code></pre><p>The rest is boiler-plate.</p><div class="noweb-label">file:<i>src/day02.rs</i></div><pre><code class="language- rust hljs">mod aoc;
 
-use crate::aoc::{Result,input_error};
+use crate::aoc::{Result,Error,input_error};
 use std::io;
 
 fn read_input() -&gt; Result&lt;Vec&lt;(u8, u8)&gt;&gt; {
     let mut result = Vec::new();
     for line in io::stdin().lines() {
         let l = line.map_err(input_error)?;
+        if l.len() != 3 { return Err(Error::Input(&quot;unexpected input&quot;.to_string())); }
         result.push((l.as_bytes()[0] - b&#39;A&#39;, l.as_bytes()[2] - b&#39;X&#39;));
     }
     Ok(result)
 }
 
-fn to_win_against(a: u8) -&gt; u8 { (a + 1) % 3 }
-fn to_lose_against(a: u8) -&gt; u8 { (a + 2) % 3 }
-fn to_draw_against(a: u8) -&gt; u8 { a }
-fn win(a: u8, b: u8) -&gt; bool { a == to_win_against(b) }
-fn score(a: u8, b: u8) -&gt; u32 {
-    if win(a,b) {
-        b as u32 + 1
-    } else if win(b, a) {
-        b as u32 + 7
-    } else {
-        b as u32 + 4
-    }
-}
-
-fn game_score&lt;I&gt;(g: I) -&gt; u32 where I: Iterator&lt;Item = (u8,u8)&gt;
-    { g.map(|(a,b)|{score(a, b)}).sum() }
-
-fn xyz(i: u8) -&gt; fn (u8) -&gt; u8
-    { [to_lose_against, to_draw_against, to_win_against][i as usize] }
+&lt;&lt;day02-compute-scores&gt;&gt;
 
 fn main() -&gt; Result&lt;()&gt; {
     let input = read_input()?;
-    println!(&quot;Part 1: {}&quot;, game_score(input.iter().copied()));
-    let games = input.into_iter().map(|(a,b)|{(a,xyz(b)(a))});
-    println!(&quot;Part 2: {}&quot;, game_score(games));
+    println!(&quot;Part 1: {}&quot;, input.iter().copied().map(score_part_1).sum::&lt;u32&gt;());
+    println!(&quot;Part 2: {}&quot;, input.iter().copied().map(score_part_2).sum::&lt;u32&gt;());
     Ok(())
-}</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day01/">« Day 01: Calorie Counting</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 2 December 2022 16:09">Friday 2 December 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+}</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day01/">« Day 01: Calorie Counting</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 2 December 2022 21:17">Friday 2 December 2022</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
