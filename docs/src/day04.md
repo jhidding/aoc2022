@@ -32,3 +32,16 @@ end  # module
 using AOC2022  # hide
 @day 4
 ```
+
+Going to make a nice plot of my input
+
+```@example
+using AOC2022.Day04: read_input
+using DataFrames
+using GnuplotLite
+
+data = open(read_input, "data/day04.txt", "r")
+to_row((a, b)) = (a0=a.start, a1=a.stop, b0=b.start, b1=b.stop)
+df = data .|> to_row |> DataFrame
+nothing
+```

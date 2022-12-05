@@ -9,9 +9,29 @@ struct Move
     to::Int
 end
 
+const Crates = Vector{Vector{Char}}
+
 mutable struct State
-    piles::Vector{Vector{Char}}
+    crates::Crates
     instructions::Vector{Move}
+end
+
+crate_mover_9000(crates::Crates) = function (m::Move)
+    for _ in 1:m.amount
+        x = pop!(crates[m.from])
+        push!(crates[m.to], x)
+    end
+end
+
+crate_mover_9001(crates::Crates) = function (m::Move)
+    x = crates[m.from][end-m.amount+1:end]
+    crates[m.from] = crates[m.from][1:end-m.amount]
+    append!(crates[m.to], x)
+end
+
+function run(crane::Function, st::State)
+    foreach(crane(st.crates), st.instructions)
+    st
 end
 
 function Base.parse(::Type{Move}, line)
@@ -25,24 +45,32 @@ end
 
 function read_input(io::IO)
     lines = collect(readlines(io))
-    piles = [[] for _ in 1:9]
+    crates = [[] for _ in 1:9]
     for i in 1:8
         for j in 1:9
             c = lines[i][(j-1)*4+2]
             if c != ' '
-                push!(piles[j], c)
+                pushfirst!(crates[j], c)
             end
         end
     end
 
     instructions = lines[11:end] .|> l->parse(Move, l)
-    State(piles, instructions)
+    State(crates, instructions)
 end
 
 function main(io::IO)
     input = read_input(io)
-    println(input)
+    part1 = run(crate_mover_9000, deepcopy(input))
+    println("Part 1: $(last.(part1.crates) |> String)")
+    part2 = run(crate_mover_9001, deepcopy(input))
+    println("Part 2: $(last.(part2.crates) |> String)")
 end
 
 end  # module
+```
+
+```@example
+using AOC2022  # hide
+@day 5
 ```
