@@ -7,9 +7,29 @@ struct Move
     to::Int
 end
 
+const Crates = Vector{Vector{Char}}
+
 mutable struct State
-    piles::Vector{Vector{Char}}
+    crates::Crates
     instructions::Vector{Move}
+end
+
+crate_mover_9000(crates::Crates) = function (m::Move)
+    for _ in 1:m.amount
+        x = pop!(crates[m.from])
+        push!(crates[m.to], x)
+    end
+end
+
+crate_mover_9001(crates::Crates) = function (m::Move)
+    x = crates[m.from][end-m.amount+1:end]
+    crates[m.from] = crates[m.from][1:end-m.amount]
+    append!(crates[m.to], x)
+end
+
+function run(crane::Function, st::State)
+    foreach(crane(st.crates), st.instructions)
+    st
 end
 
 function Base.parse(::Type{Move}, line)
@@ -23,23 +43,27 @@ end
 
 function read_input(io::IO)
     lines = collect(readlines(io))
-    piles = [[] for _ in 1:9]
+    crates = [[] for _ in 1:9]
     for i in 1:8
         for j in 1:9
             c = lines[i][(j-1)*4+2]
             if c != &#39; &#39;
-                push!(piles[j], c)
+                pushfirst!(crates[j], c)
             end
         end
     end
 
     instructions = lines[11:end] .|&gt; l-&gt;parse(Move, l)
-    State(piles, instructions)
+    State(crates, instructions)
 end
 
 function main(io::IO)
     input = read_input(io)
-    println(input)
+    part1 = run(crate_mover_9000, deepcopy(input))
+    println(&quot;Part 1: $(last.(part1.crates) |&gt; String)&quot;)
+    part2 = run(crate_mover_9001, deepcopy(input))
+    println(&quot;Part 2: $(last.(part2.crates) |&gt; String)&quot;)
 end
 
-end  # module</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day04/">« Day 04: Camp Cleanup</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 5 December 2022 06:26">Monday 5 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end  # module</code></pre><pre><code class="language-julia hljs">@day 5</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: CWMTGHBDW
+Part 2: SSCGWJCRB</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day04/">« Day 04: Camp Cleanup</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 5 December 2022 08:42">Monday 5 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
