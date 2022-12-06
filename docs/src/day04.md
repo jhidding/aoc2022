@@ -38,10 +38,24 @@ Going to make a nice plot of my input
 ```@example
 using AOC2022.Day04: read_input
 using DataFrames
-using GnuplotLite
+using CairoMakie
 
-data = open(read_input, "data/day04.txt", "r")
+data = open(read_input, "../../data/day04.txt", "r")
 to_row((a, b)) = (a0=a.start, a1=a.stop, b0=b.start, b1=b.stop)
 df = data .|> to_row |> DataFrame
-nothing
+
+with_theme(theme_dark()) do
+    CairoMakie.activate!(type = "svg")
+    fig = Figure()
+    ax = Axis(fig[1, 1])
+    x = 1:size(df)[1]
+
+    rangebars!(ax, 1:100, df.a0[1:100], df.a1[1:100], color="#cc444488", linewidth = 5)
+    rangebars!(ax, 1:100, df.b0[1:100], df.b1[1:100], color="#4444cc88", linewidth = 5)
+
+    save("day04.svg", fig)
+end
+nothing  # hide
 ```
+
+![Day 4 viz](day04.svg)

@@ -5,7 +5,7 @@ module AOC2022
 using Printf
 export @day
 
-advent = filter(f -> occursin(r"day[0-9]{2}.jl", f), readdir(@__DIR__))
+advent = filter(f -> occursin(r"day.*\.jl", f), readdir(@__DIR__))
 
 for day in advent
     include(day)
