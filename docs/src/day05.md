@@ -101,6 +101,12 @@ using AOC2022  # hide
 @day 5
 ```
 
+On Reddit [u/i_have_no_biscuits](https://www.reddit.com/r/adventofcode/comments/zdbvzn/2022_day_5_a_christmas_day_5_message_for_you_all/?utm_source=share&utm_medium=web2x&context=3) constructed an additional input with a hidden message:
+
+```@example 1
+open(AOC2022.Day05.main, "../../data/day05-msg.txt", "r")
+```
+
 ## Reading input
 
 ``` {.julia #day05-read-input}

@@ -9,6 +9,9 @@ $(days):
 	@echo -e "\033[1mRunning day $(@:day%=%)\033[m"
 	@julia --project=. -e 'using AOC2022; @day $(@:day%=%)' | $(indent)
 
+serve:
+	julia --project=docs/ -ie 'using AOC2022, LiveServer; servedocs()'
+
 docs:
 	julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
-	julia --project=docs docs/make.jl
+	julia --project=docs/ docs/make.jl

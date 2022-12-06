@@ -41,25 +41,25 @@ end
 function Base.parse(::Type{Move}, line)
     r = r"move (\d+) from (\d+) to (\d+)"
     m = match(r, line)
-    if m === nothing
-        error("Parse error, not a Move: $line")
-    end
-    Move(parse.(Int, m)...)
+    isnothing(m) ? nothing : Move(parse.(Int, m)...)
 end
 
 function read_input(io::IO)
     lines = collect(readlines(io))
     crates = [[] for _ in 1:9]
-    for i in 1:8
+    for l in lines
+        if !contains(l, r"\[[A-Z]\]")
+            break
+        end
         for j in 1:9
-            c = lines[i][(j-1)*4+2]
+            c = l[(j-1)*4+2]
             if c != ' '
                 pushfirst!(crates[j], c)
             end
         end
     end
 
-    instructions = lines[11:end] .|> l->parse(Move, l)
+    instructions = filter(!isnothing, lines .|> l->parse(Move, l))
     State(crates, instructions)
 end
 # ~\~ end
