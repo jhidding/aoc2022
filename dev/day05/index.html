@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 05 · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li class="is-active"><a class="tocitem" href>Day 05</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 05</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 05</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-05"><a class="docs-heading-anchor" href="#Day-05">Day 05</a><a id="Day-05-1"></a><a class="docs-heading-anchor-permalink" href="#Day-05" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day05.jl</i></div><pre><code class="language- julia hljs">module Day05
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 05: Supply Stacks · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li class="is-active"><a class="tocitem" href>Day 05: Supply Stacks</a><ul class="internal"><li><a class="tocitem" href="#Reading-input"><span>Reading input</span></a></li><li><a class="tocitem" href="#Plotting-code"><span>Plotting code</span></a></li></ul></li><li><a class="tocitem" href="../day06/">Day 06: Tuning Trouble</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 05: Supply Stacks</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 05: Supply Stacks</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-05:-Supply-Stacks"><a class="docs-heading-anchor" href="#Day-05:-Supply-Stacks">Day 05: Supply Stacks</a><a id="Day-05:-Supply-Stacks-1"></a><a class="docs-heading-anchor-permalink" href="#Day-05:-Supply-Stacks" title="Permalink"></a></h1><p>We need to move crates from a start configuration. I store the data (stack and instructions) in a struct.</p><div class="noweb-label">⪡supply-stacks⪢≣</div><pre><code class="language- julia hljs">const Crates = Vector{Vector{Char}}
 
 struct Move
     amount::Int
@@ -7,32 +7,37 @@ struct Move
     to::Int
 end
 
-const Crates = Vector{Vector{Char}}
-
 mutable struct State
     crates::Crates
     instructions::Vector{Move}
-end
-
-crate_mover_9000(crates::Crates) = function (m::Move)
+end</code></pre><p>The CrateMover-9000 uses a one-by-one stack operation to move crates.</p><div class="noweb-label">⪡crate-mover⪢≣</div><pre><code class="language- julia hljs">crate_mover_9000(crates::Crates) = function (m::Move)
     for _ in 1:m.amount
         x = pop!(crates[m.from])
         push!(crates[m.to], x)
     end
-end
-
-crate_mover_9001(crates::Crates) = function (m::Move)
+end</code></pre><p>Here I&#39;ve hand-curried the <code>crate_mover_9000</code> function, to make it easier to work with the <code>foreach</code> function:</p><div class="noweb-label">⪡crate-mover⪢⊞</div><pre><code class="language- julia hljs">function run(crane::Function, st::State)
+    foreach(crane(st.crates), st.instructions)
+    st
+end</code></pre><p>For the CrateMover-9001 we can use array slicing to do what we want.</p><div class="noweb-label">⪡crate-mover⪢⊞</div><pre><code class="language- julia hljs">crate_mover_9001(crates::Crates) = function (m::Move)
     x = crates[m.from][end-m.amount+1:end]
     crates[m.from] = crates[m.from][1:end-m.amount]
     append!(crates[m.to], x)
+end</code></pre><p><img src="../day05-result.svg" alt="Stack after Part 2"/></p><div class="noweb-label">file:<i>src/day05.jl</i></div><pre><code class="language- julia hljs">module Day05
+
+&lt;&lt;supply-stacks&gt;&gt;
+&lt;&lt;crate-mover&gt;&gt;
+&lt;&lt;day05-read-input&gt;&gt;
+
+function main(io::IO)
+    input = read_input(io)
+    part1 = run(crate_mover_9000, deepcopy(input))
+    println(&quot;Part 1: $(last.(part1.crates) |&gt; String)&quot;)
+    part2 = run(crate_mover_9001, deepcopy(input))
+    println(&quot;Part 2: $(last.(part2.crates) |&gt; String)&quot;)
 end
 
-function run(crane::Function, st::State)
-    foreach(crane(st.crates), st.instructions)
-    st
-end
-
-function Base.parse(::Type{Move}, line)
+end  # module</code></pre><pre><code class="language-julia hljs">@day 5</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: CWMTGHBDW
+Part 2: SSCGWJCRB</code></pre><h2 id="Reading-input"><a class="docs-heading-anchor" href="#Reading-input">Reading input</a><a id="Reading-input-1"></a><a class="docs-heading-anchor-permalink" href="#Reading-input" title="Permalink"></a></h2><div class="noweb-label">⪡day05-read-input⪢≣</div><pre><code class="language- julia hljs">function Base.parse(::Type{Move}, line)
     r = r&quot;move (\d+) from (\d+) to (\d+)&quot;
     m = match(r, line)
     if m === nothing
@@ -55,15 +60,38 @@ function read_input(io::IO)
 
     instructions = lines[11:end] .|&gt; l-&gt;parse(Move, l)
     State(crates, instructions)
+end</code></pre><h2 id="Plotting-code"><a class="docs-heading-anchor" href="#Plotting-code">Plotting code</a><a id="Plotting-code-1"></a><a class="docs-heading-anchor-permalink" href="#Plotting-code" title="Permalink"></a></h2><div class="noweb-label">file:<i>src/day05-figure.jl</i></div><pre><code class="language- julia hljs">module Day05Figure
+
+export plot
+
+using Makie
+using Makie.GeometryBasics
+
+include(&quot;day05.jl&quot;)
+using .Day05: Crates
+
+unzip(lst) = (getindex.(lst,1), getindex.(lst,2))
+
+crates_to_rects(crates::Crates) =
+    unzip([(Rect(i-0.45, j-0.95, 0.9, 0.9), k - &#39;A&#39;)
+           for i in 1:9
+           for (j, k) in enumerate(crates[i])])
+
+plot(crates::Crates; fig=nothing, ax=nothing) = begin
+    if ax === nothing
+        fig = Figure()
+        ax = Axis(fig[1,1]; aspect=DataAspect(), 
+            xticksmirrored = true, yticksmirrored = true,
+            xticks=1:9, yticks=0:5:25)
+    end
+    crates |&gt; crates_to_rects |&gt;
+        r -&gt; poly!(ax, r[1], color = r[2], colormap = :roma)
+    for i in 1:9
+        for (j, k) in enumerate(crates[i])
+            text!(ax, i, j-0.5, text=&quot;$k&quot;, align=(:center,:center), color=:black)
+        end
+    end
+    fig
 end
 
-function main(io::IO)
-    input = read_input(io)
-    part1 = run(crate_mover_9000, deepcopy(input))
-    println(&quot;Part 1: $(last.(part1.crates) |&gt; String)&quot;)
-    part2 = run(crate_mover_9001, deepcopy(input))
-    println(&quot;Part 2: $(last.(part2.crates) |&gt; String)&quot;)
-end
-
-end  # module</code></pre><pre><code class="language-julia hljs">@day 5</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: CWMTGHBDW
-Part 2: SSCGWJCRB</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day04/">« Day 04: Camp Cleanup</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Monday 5 December 2022 08:42">Monday 5 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end  # module</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day04/">« Day 04: Camp Cleanup</a><a class="docs-footer-nextpage" href="../day06/">Day 06: Tuning Trouble »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 6 December 2022 16:13">Tuesday 6 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
