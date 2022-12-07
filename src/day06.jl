@@ -31,6 +31,45 @@ function find_start_marker_cb(n::Int, s::String)
     -1
 end
 # ~\~ end
+# ~\~ begin <<docs/src/day06.md|day06-circular-buffer>>[1]
+mutable struct BitCounter{T}
+    bits::T
+    count::T
+end
+
+BitCounter{T}() where T <: Integer = BitCounter{T}(0, 0)
+
+function insert!(b::BitCounter{T}, i::T) where T <: Integer
+    if b.bits & (1 << i) == 0
+        b.count += 1
+    end
+    b.bits ⊻= (1 << i)
+end
+
+function remove!(b::BitCounter{T}, i::T) where T <: Integer
+    if b.bits & (1 << i) != 0
+        b.count -= 1
+    end
+    b.bits ⊻= (1 << i)
+end
+
+function find_start_marker_bitmask(n::Int, s::String)
+    b = CircularBuffer{Char}(Vector{Char}(s[1:n]))
+    x = BitCounter{Int64}()
+    for c in s[1:n]
+        insert!(x, c - 'a')
+    end
+    for (j, c) in enumerate(s[n+1:end])
+        out = pushpop!(b, c)
+        remove!(x, out - 'a')
+        insert!(x, c - 'a')
+        if x.count == n
+            return j+n
+        end
+    end
+    -1
+end
+# ~\~ end
 
 end  # module
 # ~\~ end

@@ -21,7 +21,6 @@ function main(io::IO)
 end
 
 <<day06-circular-buffer>>
-<<day06-int-mask>>
 
 end  # module
 ```
@@ -52,7 +51,7 @@ A circular buffer sits on a `Vector` of constant size. Each time we `push!` an e
 ``` {.julia file=src/CircularBuffers.jl}
 module CircularBuffers
 
-export CircularBuffer, content
+export CircularBuffer, content, pushpop!
 
 mutable struct CircularBuffer{T}
     content::Vector{T}
@@ -147,24 +146,49 @@ function pushpop!(b::CircularBuffer{T}, item::T) where T
     oldvalue = b.content[b.endloc]
     b.content[b.endloc] = item
     b.endloc = mod1(b.endloc+1, length(b.content))
+    oldvalue
 end
 
 Base.allunique(b::CircularBuffer{T}) where T = allunique(content(b))
 ```
 
 ## Using a bitset
+Julia has a datatype `BitSet`, but that doesn't keep track of the number of items in the set. We can make our own `BitCounter`. This doesn't exactly count the number of unique items in the set, but doubles are counted only once due to the virtue of the exclusive-or operator. This means that the maximum count is still the length of the set, and this only occurs when all inserted elements are unique.
 
 ``` {.julia #day06-circular-buffer}
-function find_start_marker_cb(n::Int, s::String)
-    b = CircularBuffer{Char}(Vector{Char}(s[1:n]))
-    bits = 0
-    for c in s[1:n]
-        bits &= (1 << (c - 'a'))
+mutable struct BitCounter{T}
+    bits::T
+    count::T
+end
+
+BitCounter{T}() where T <: Integer = BitCounter{T}(0, 0)
+
+function insert!(b::BitCounter{T}, i::T) where T <: Integer
+    if b.bits & (1 << i) == 0
+        b.count += 1
     end
-    for (i, c) in enumerate(s[n+1:end])
+    b.bits ⊻= (1 << i)
+end
+
+function remove!(b::BitCounter{T}, i::T) where T <: Integer
+    if b.bits & (1 << i) != 0
+        b.count -= 1
+    end
+    b.bits ⊻= (1 << i)
+end
+
+function find_start_marker_bitmask(n::Int, s::String)
+    b = CircularBuffer{Char}(Vector{Char}(s[1:n]))
+    x = BitCounter{Int64}()
+    for c in s[1:n]
+        insert!(x, c - 'a')
+    end
+    for (j, c) in enumerate(s[n+1:end])
         out = pushpop!(b, c)
-        if length(b) == n && allunique(b)
-            return i+n
+        remove!(x, out - 'a')
+        insert!(x, c - 'a')
+        if x.count == n
+            return j+n
         end
     end
     -1
@@ -172,15 +196,20 @@ end
 ```
 
 ## Benchmarks
-The crazy thing is: the circular buffer version is faster than the first version, which I don't understand at all.
+The crazy thing is: the circular buffer version is faster than the first version, which I don't understand at all. What I do understand is why the bitmask version beats all the others.
 
 ```@example 1
 using BenchmarkTools
 using AOC2022: with_cache
-using AOC2022.Day06: find_start_marker, find_start_marker_cb
+using AOC2022.Day06: find_start_marker, find_start_marker_cb, find_start_marker_bitmask
 
 input = open(readline, "../../data/day06.txt", "r")
+find_start_marker(14, input) == 
+    find_start_marker_cb(14, input) == 
+    find_start_marker_bitmask(14, input)
+```
 
+```@example 1
 with_cache("../artifacts/day06-benchmark-1.bin") do
     @benchmark find_start_marker(14, input)
 end
@@ -189,5 +218,11 @@ end
 ```@example 1
 with_cache("../artifacts/day06-benchmark-2.bin") do
     @benchmark find_start_marker_cb(14, input)
+end
+```
+
+```@example 1
+with_cache("../artifacts/day06-benchmark-3.bin") do
+    @benchmark find_start_marker_bitmask(14, input)
 end
 ```

@@ -101,6 +101,8 @@ function read_input(io::IO)
     filter(!isnothing, readlines(io) .|> l -> parse(Console, l))
 end
 
+const MB = 1000000
+
 function main(io::IO)
     input::Vector{Console} = read_input(io)
     tree = build_tree(input)
@@ -108,8 +110,8 @@ function main(io::IO)
     part1 = sum(d.size for d in flat if d.size <= 100000)
     println("Part 1: $part1")
 
-    space_free = 70000000 - tree.size
-    need_to_free = 30000000 - space_free
+    space_free = 70MB - tree.size
+    need_to_free = 30MB - space_free
     (part2, _) = findmin(d->d.size, filter(d -> d.size >= need_to_free, flat))
     println("Part 2: $part2")
 end

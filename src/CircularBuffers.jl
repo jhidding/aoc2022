@@ -2,7 +2,7 @@
 # ~\~ begin <<docs/src/day06.md|src/CircularBuffers.jl>>[init]
 module CircularBuffers
 
-export CircularBuffer, content
+export CircularBuffer, content, pushpop!
 
 mutable struct CircularBuffer{T}
     content::Vector{T}
@@ -53,6 +53,13 @@ function Base.push!(b::CircularBuffer{T}, item::T) where T
     b.content[b.endloc] = item
     b.endloc = mod1(b.endloc+1, length(b.content))
     b.length = min(length(b.content), b.length+1)
+end
+
+function pushpop!(b::CircularBuffer{T}, item::T) where T
+    oldvalue = b.content[b.endloc]
+    b.content[b.endloc] = item
+    b.endloc = mod1(b.endloc+1, length(b.content))
+    oldvalue
 end
 
 Base.allunique(b::CircularBuffer{T}) where T = allunique(content(b))

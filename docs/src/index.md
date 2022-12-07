@@ -19,6 +19,7 @@ using AOC2022
 module AOC2022
 
 using Printf
+using Serialization
 
 # Introduced on day 6
 include("CircularBuffers.jl")
@@ -36,7 +37,14 @@ macro day(n::Int)
     modname = Symbol(@sprintf "Day%02u" n)
     input_file = joinpath(@__DIR__, @sprintf "../data/day%02u.txt" n)
     :(open($modname.main, $input_file, "r"))
+end  
+
+function with_cache(func::Function, filename::AbstractString)
+    if !isfile(filename)
+        serialize(filename, func())
+    end
+    deserialize(filename)
 end
 
-end
+end  # module
 ```
