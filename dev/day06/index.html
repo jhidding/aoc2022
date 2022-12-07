@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 06: Tuning Trouble · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li class="is-active"><a class="tocitem" href>Day 06: Tuning Trouble</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-06:-Tuning-Trouble"><a class="docs-heading-anchor" href="#Day-06:-Tuning-Trouble">Day 06: Tuning Trouble</a><a id="Day-06:-Tuning-Trouble-1"></a><a class="docs-heading-anchor-permalink" href="#Day-06:-Tuning-Trouble" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day06.jl</i></div><pre><code class="language- julia hljs">module Day06
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 06: Tuning Trouble · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li class="is-active"><a class="tocitem" href>Day 06: Tuning Trouble</a><ul class="internal"><li><a class="tocitem" href="#Let&#39;s-go-crazy"><span>Let&#39;s go crazy</span></a></li><li><a class="tocitem" href="#Benchmarks"><span>Benchmarks</span></a></li></ul></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-06:-Tuning-Trouble"><a class="docs-heading-anchor" href="#Day-06:-Tuning-Trouble">Day 06: Tuning Trouble</a><a id="Day-06:-Tuning-Trouble-1"></a><a class="docs-heading-anchor-permalink" href="#Day-06:-Tuning-Trouble" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day06.jl</i></div><pre><code class="language- julia hljs">module Day06
+
+using ..CircularBuffers
 
 function find_start_marker(n::Int, s::String)
     for i in n:length(s)
-        if length(Set(s[i-n+1:i])) == n
+        if allunique(s[i-n+1:i])
             return i
         end
     end
@@ -16,5 +18,100 @@ function main(io::IO)
     println(&quot;Part 2: $(find_start_marker(14, input))&quot;)
 end
 
+&lt;&lt;day06-circular-buffer&gt;&gt;
+
 end  # module</code></pre><pre><code class="language-julia hljs">@day 6</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: 1155
-Part 2: 2789</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day05/">« Day 05: Supply Stacks</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 6 December 2022 16:20">Tuesday 6 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Part 2: 2789</code></pre><h2 id="Let&#39;s-go-crazy"><a class="docs-heading-anchor" href="#Let&#39;s-go-crazy">Let&#39;s go crazy</a><a id="Let&#39;s-go-crazy-1"></a><a class="docs-heading-anchor-permalink" href="#Let&#39;s-go-crazy" title="Permalink"></a></h2><p>This is rather mad, but we can implement a circular buffer, so theoretically we would not need to load all data at once. Call me crazy, but this <strong>sliding window</strong> thing that is introduced here is typically something seemingly innocuous that comes back with a revenge next week in Advent of Code.</p><div class="noweb-label">⪡day06-circular-buffer⪢≣</div><pre><code class="language- julia hljs">function find_start_marker_cb(n::Int, s::String)
+    b = CircularBuffer{Char}(n)
+    for (i, c) in enumerate(s)
+        push!(b, c)
+        if length(b) == n &amp;&amp; allunique(b)
+            return i
+        end
+    end
+    -1
+end</code></pre><p>A circular buffer sits on a <code>Vector</code> of constant size. Each time we <code>push!</code> an element to the buffer, we assign it to the current <code>endloc</code> pointer, overwriting the oldest value. This pointer gets advanced by one, wrapping around when needed.</p><div class="noweb-label">file:<i>src/CircularBuffers.jl</i></div><pre><code class="language- julia hljs">module CircularBuffers
+
+export CircularBuffer, content
+
+mutable struct CircularBuffer{T}
+    content::Vector{T}
+    endloc::Int
+    length::Int
+end
+
+&lt;&lt;circular-buffer-constructors&gt;&gt;
+&lt;&lt;circular-buffer-methods&gt;&gt;
+
+end</code></pre><p>For now we have two constructors: one that has the buffer size given, and leaves the contents uninitialised, the other where you give prefilled contents and we assume the buffer is completely filled.</p><div class="noweb-label">⪡circular-buffer-constructors⪢≣</div><pre><code class="language- julia hljs">CircularBuffer{T}(size::Int) where T =
+    CircularBuffer{T}(Vector{T}(undef, size), 1, 0)
+
+CircularBuffer{T}(content::Vector{T}) where T =
+    CircularBuffer{T}(content, 1, length(content))</code></pre><p>Julia provides an interface definition for collections. This interface is not in any way regulated by the type system though. It is convenient to build some unit tests.</p><div class="noweb-label">file:<i>test/runtests.jl</i></div><pre><code class="language- julia hljs">using Test, AOC2022.CircularBuffers
+
+@testset &quot;CircularBuffers&quot; begin
+    b = CircularBuffer{Int}(4)
+    @test isempty(b)
+    foreach(i-&gt;push!(b, i), 1:3)
+    @test length(b) == 3
+    @test sort(content(b)) == [1, 2, 3]
+    foreach(i-&gt;push!(b, i), 1:3)
+    @test 1 ∈ b &amp;&amp; 2 ∈ b &amp;&amp; 3 ∈ b
+    @test 4 ∉ b
+    @test length(b) == 4
+    empty!(b)
+    @test isempty(b)
+    @test eltype(b) == Int
+end</code></pre><h3 id="General-collection"><a class="docs-heading-anchor" href="#General-collection">General collection</a><a id="General-collection-1"></a><a class="docs-heading-anchor-permalink" href="#General-collection" title="Permalink"></a></h3><p>A general collection in Julia is expected to have the following methods defined.</p><div class="noweb-label">⪡circular-buffer-methods⪢≣</div><pre><code class="language- julia hljs">Base.isempty(b::CircularBuffer{T}) where T = b.length == 0
+
+function Base.empty!(b::CircularBuffer{T}) where T
+    b.length = 0
+    b.endloc = 1
+end
+
+Base.length(b::CircularBuffer{T}) where T = b.length
+Base.checked_length(b::CircularBuffer{T}) where T = b.length</code></pre><h3 id="Iterable-collection"><a class="docs-heading-anchor" href="#Iterable-collection">Iterable collection</a><a id="Iterable-collection-1"></a><a class="docs-heading-anchor-permalink" href="#Iterable-collection" title="Permalink"></a></h3><p>In many cases we need to see the contents but are not interested in the order of things. The <code>contents</code> function only worries about rearranging stuff when the length of the buffer contents is shorter than the buffer size.</p><div class="noweb-label">⪡circular-buffer-methods⪢⊞</div><pre><code class="language- julia hljs">function content(b::CircularBuffer{T}) where T
+    if b.length &lt; length(b.content)
+        start = mod1(b.endloc-b.length, length(b.content))
+        if start+b.length &lt;= length(b.content)
+            b.content[start:start+b.length-1]
+        else
+            rest = start + b.length - length(b.content)
+            [b.content[start:end];b.content[1:rest]]
+        end
+    else
+        b.content
+    end
+end</code></pre><div class="noweb-label">⪡circular-buffer-methods⪢⊞</div><pre><code class="language- julia hljs">Base.in(item::T, b::CircularBuffer{T}) where T = item in content(b)
+Base.eltype(::CircularBuffer{T}) where T = T
+Base.unique(b::CircularBuffer{T}) where T = unique(content(b))
+Base.unique(f::Function, b::CircularBuffer{T}) where T = unique(f, content(b))
+
+function Base.push!(b::CircularBuffer{T}, item::T) where T
+    b.content[b.endloc] = item
+    b.endloc = mod1(b.endloc+1, length(b.content))
+    b.length = min(length(b.content), b.length+1)
+end
+
+Base.allunique(b::CircularBuffer{T}) where T = allunique(content(b))</code></pre><h2 id="Benchmarks"><a class="docs-heading-anchor" href="#Benchmarks">Benchmarks</a><a id="Benchmarks-1"></a><a class="docs-heading-anchor-permalink" href="#Benchmarks" title="Permalink"></a></h2><p>The crazy thing is: the circular buffer version is faster than the first version, which I don&#39;t understand at all.</p><pre><code class="language-julia hljs">using BenchmarkTools
+using AOC2022.Day06: find_start_marker, find_start_marker_cb
+input = open(readline, &quot;../../data/day06.txt&quot;, &quot;r&quot;)
+@benchmark find_start_marker(14, input)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 5854 samples with 1 evaluation.
+ Range (min … max):  594.698 μs … 20.453 ms  ┊ GC (min … max):  0.00% … 95.80%
+ Time  (median):     620.497 μs              ┊ GC (median):     0.00%
+ Time  (mean ± σ):   851.071 μs ±  1.727 ms  ┊ GC (mean ± σ):  17.88% ±  8.47%
+
+  ▄██▇▆▆▄▃▂▁▁▁▁▁           ▁▁                           ▄▆▆▅▃▁ ▂
+  ███████████████████▇▆███▇████▇▇▆▇▆▅▅▅▅▃▄▁▁▄▃▃▁▅▁▅▄▁▃▄███████ █
+  595 μs        Histogram: log(frequency) by time         1 ms &lt;
+
+ Memory estimate: 1007.12 KiB, allocs estimate: 13937.</code></pre><pre><code class="language-julia hljs">@benchmark find_start_marker_cb(14, input)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 6674 samples with 1 evaluation.
+ Range (min … max):  468.299 μs … 21.182 ms  ┊ GC (min … max):  0.00% … 96.22%
+ Time  (median):     498.798 μs              ┊ GC (median):     0.00%
+ Time  (mean ± σ):   746.895 μs ±  1.725 ms  ┊ GC (mean ± σ):  19.41% ±  8.14%
+
+  ▄██▇▆▅▄▄▂▂      ▁ ▁      ▁ ▁▁                         ▂▆▇▆▄▂ ▂
+  ███████████▇▇██████▆▆▇▇▇██████▇▇█▆▆▆▆▄▅▄▃▃▄▄▁▃▃▁▁▁▁▁▁▄██████ █
+  468 μs        Histogram: log(frequency) by time       879 μs &lt;
+
+ Memory estimate: 923.52 KiB, allocs estimate: 11181.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day05/">« Day 05: Supply Stacks</a><a class="docs-footer-nextpage" href="../day07/">Day 07: No Space Left On Device »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 7 December 2022 07:01">Wednesday 7 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
