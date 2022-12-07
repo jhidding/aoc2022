@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 06: Tuning Trouble · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li class="is-active"><a class="tocitem" href>Day 06: Tuning Trouble</a><ul class="internal"><li><a class="tocitem" href="#Let&#39;s-go-crazy"><span>Let&#39;s go crazy</span></a></li><li><a class="tocitem" href="#Benchmarks"><span>Benchmarks</span></a></li></ul></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-06:-Tuning-Trouble"><a class="docs-heading-anchor" href="#Day-06:-Tuning-Trouble">Day 06: Tuning Trouble</a><a id="Day-06:-Tuning-Trouble-1"></a><a class="docs-heading-anchor-permalink" href="#Day-06:-Tuning-Trouble" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day06.jl</i></div><pre><code class="language- julia hljs">module Day06
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 06: Tuning Trouble · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li class="is-active"><a class="tocitem" href>Day 06: Tuning Trouble</a><ul class="internal"><li><a class="tocitem" href="#Let&#39;s-go-crazy"><span>Let&#39;s go crazy</span></a></li><li><a class="tocitem" href="#Using-a-bitset"><span>Using a bitset</span></a></li><li><a class="tocitem" href="#Benchmarks"><span>Benchmarks</span></a></li></ul></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li><li><a class="tocitem" href="../day08/">Day 08</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 06: Tuning Trouble</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-06:-Tuning-Trouble"><a class="docs-heading-anchor" href="#Day-06:-Tuning-Trouble">Day 06: Tuning Trouble</a><a id="Day-06:-Tuning-Trouble-1"></a><a class="docs-heading-anchor-permalink" href="#Day-06:-Tuning-Trouble" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day06.jl</i></div><pre><code class="language- julia hljs">module Day06
 
 using ..CircularBuffers
 
@@ -32,7 +32,7 @@ Part 2: 2789</code></pre><h2 id="Let&#39;s-go-crazy"><a class="docs-heading-anch
     -1
 end</code></pre><p>A circular buffer sits on a <code>Vector</code> of constant size. Each time we <code>push!</code> an element to the buffer, we assign it to the current <code>endloc</code> pointer, overwriting the oldest value. This pointer gets advanced by one, wrapping around when needed.</p><div class="noweb-label">file:<i>src/CircularBuffers.jl</i></div><pre><code class="language- julia hljs">module CircularBuffers
 
-export CircularBuffer, content
+export CircularBuffer, content, pushpop!
 
 mutable struct CircularBuffer{T}
     content::Vector{T}
@@ -93,25 +93,87 @@ function Base.push!(b::CircularBuffer{T}, item::T) where T
     b.length = min(length(b.content), b.length+1)
 end
 
-Base.allunique(b::CircularBuffer{T}) where T = allunique(content(b))</code></pre><h2 id="Benchmarks"><a class="docs-heading-anchor" href="#Benchmarks">Benchmarks</a><a id="Benchmarks-1"></a><a class="docs-heading-anchor-permalink" href="#Benchmarks" title="Permalink"></a></h2><p>The crazy thing is: the circular buffer version is faster than the first version, which I don&#39;t understand at all.</p><pre><code class="language-julia hljs">using BenchmarkTools
-using AOC2022.Day06: find_start_marker, find_start_marker_cb
+function pushpop!(b::CircularBuffer{T}, item::T) where T
+    oldvalue = b.content[b.endloc]
+    b.content[b.endloc] = item
+    b.endloc = mod1(b.endloc+1, length(b.content))
+    oldvalue
+end
+
+Base.allunique(b::CircularBuffer{T}) where T = allunique(content(b))</code></pre><h2 id="Using-a-bitset"><a class="docs-heading-anchor" href="#Using-a-bitset">Using a bitset</a><a id="Using-a-bitset-1"></a><a class="docs-heading-anchor-permalink" href="#Using-a-bitset" title="Permalink"></a></h2><p>Julia has a datatype <code>BitSet</code>, but that doesn&#39;t keep track of the number of items in the set. We can make our own <code>BitCounter</code>. This doesn&#39;t exactly count the number of unique items in the set, but doubles are counted only once due to the virtue of the exclusive-or operator. This means that the maximum count is still the length of the set, and this only occurs when all inserted elements are unique.</p><div class="noweb-label">⪡day06-circular-buffer⪢⊞</div><pre><code class="language- julia hljs">mutable struct BitCounter{T}
+    bits::T
+    count::T
+end
+
+BitCounter{T}() where T &lt;: Integer = BitCounter{T}(0, 0)
+
+function insert!(b::BitCounter{T}, i::T) where T &lt;: Integer
+    if b.bits &amp; (1 &lt;&lt; i) == 0
+        b.count += 1
+    end
+    b.bits ⊻= (1 &lt;&lt; i)
+end
+
+function remove!(b::BitCounter{T}, i::T) where T &lt;: Integer
+    if b.bits &amp; (1 &lt;&lt; i) != 0
+        b.count -= 1
+    end
+    b.bits ⊻= (1 &lt;&lt; i)
+end
+
+function find_start_marker_bitmask(n::Int, s::String)
+    b = CircularBuffer{Char}(Vector{Char}(s[1:n]))
+    x = BitCounter{Int64}()
+    for c in s[1:n]
+        insert!(x, c - &#39;a&#39;)
+    end
+    for (j, c) in enumerate(s[n+1:end])
+        out = pushpop!(b, c)
+        remove!(x, out - &#39;a&#39;)
+        insert!(x, c - &#39;a&#39;)
+        if x.count == n
+            return j+n
+        end
+    end
+    -1
+end</code></pre><h2 id="Benchmarks"><a class="docs-heading-anchor" href="#Benchmarks">Benchmarks</a><a id="Benchmarks-1"></a><a class="docs-heading-anchor-permalink" href="#Benchmarks" title="Permalink"></a></h2><p>The crazy thing is: the circular buffer version is faster than the first version, which I don&#39;t understand at all. What I do understand is why the bitmask version beats all the others.</p><pre><code class="language-julia hljs">using BenchmarkTools
+using AOC2022: with_cache
+using AOC2022.Day06: find_start_marker, find_start_marker_cb, find_start_marker_bitmask
+
 input = open(readline, &quot;../../data/day06.txt&quot;, &quot;r&quot;)
-@benchmark find_start_marker(14, input)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 5854 samples with 1 evaluation.
- Range (min … max):  594.698 μs … 20.453 ms  ┊ GC (min … max):  0.00% … 95.80%
- Time  (median):     620.497 μs              ┊ GC (median):     0.00%
- Time  (mean ± σ):   851.071 μs ±  1.727 ms  ┊ GC (mean ± σ):  17.88% ±  8.47%
+find_start_marker(14, input) ==
+    find_start_marker_cb(14, input) ==
+    find_start_marker_bitmask(14, input)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">true</code></pre><pre><code class="language-julia hljs">with_cache(&quot;../artifacts/day06-benchmark-1.bin&quot;) do
+    @benchmark find_start_marker(14, input)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 10000 samples with 1 evaluation.
+ Range <span class="sgr90">(</span><span class="sgr36"><span class="sgr1">min</span></span> … <span class="sgr35">max</span><span class="sgr90">):  </span><span class="sgr36"><span class="sgr1">317.248 μs</span></span> … <span class="sgr35">17.777 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>min … max<span class="sgr90">): </span> 0.00% … 96.95%
+ Time  <span class="sgr90">(</span><span class="sgr34"><span class="sgr1">median</span></span><span class="sgr90">):     </span><span class="sgr34"><span class="sgr1">338.184 μs              </span></span><span class="sgr90">┊</span> GC <span class="sgr90">(</span>median<span class="sgr90">):    </span> 0.00%
+ Time  <span class="sgr90">(</span><span class="sgr32"><span class="sgr1">mean</span></span> ± <span class="sgr32">σ</span><span class="sgr90">):   </span><span class="sgr32"><span class="sgr1">492.035 μs</span></span> ± <span class="sgr32"> 1.338 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>mean ± σ<span class="sgr90">):  </span>22.98% ±  8.21%
 
-  ▄██▇▆▆▄▃▂▁▁▁▁▁           ▁▁                           ▄▆▆▅▃▁ ▂
-  ███████████████████▇▆███▇████▇▇▆▇▆▅▅▅▅▃▄▁▁▄▃▃▁▅▁▅▄▁▃▄███████ █
-  595 μs        Histogram: log(frequency) by time         1 ms &lt;
+   ▁█▅▁<span class="sgr34"> </span>                                  <span class="sgr32"> </span>                     
+  ▂████<span class="sgr34">▆</span>▄▃▃▃▂▂▂▂▂▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁<span class="sgr32">▁</span>▁▂▃▃▃▃▃▃▂▂▂▁▁▁▁▁▁▁▁ ▂
+  317 μs<span class="sgr90">          Histogram: frequency by time</span>          577 μs <span class="sgr1">&lt;</span>
 
- Memory estimate: 1007.12 KiB, allocs estimate: 13937.</code></pre><pre><code class="language-julia hljs">@benchmark find_start_marker_cb(14, input)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 6674 samples with 1 evaluation.
- Range (min … max):  468.299 μs … 21.182 ms  ┊ GC (min … max):  0.00% … 96.22%
- Time  (median):     498.798 μs              ┊ GC (median):     0.00%
- Time  (mean ± σ):   746.895 μs ±  1.725 ms  ┊ GC (mean ± σ):  19.41% ±  8.14%
+ Memory estimate<span class="sgr90">: </span><span class="sgr33">1007.12 KiB</span>, allocs estimate<span class="sgr90">: </span><span class="sgr33">13937</span>.</code></pre><pre><code class="language-julia hljs">with_cache(&quot;../artifacts/day06-benchmark-2.bin&quot;) do
+    @benchmark find_start_marker_cb(14, input)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 10000 samples with 1 evaluation.
+ Range <span class="sgr90">(</span><span class="sgr36"><span class="sgr1">min</span></span> … <span class="sgr35">max</span><span class="sgr90">):  </span><span class="sgr36"><span class="sgr1">244.910 μs</span></span> … <span class="sgr35">17.946 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>min … max<span class="sgr90">): </span> 0.00% … 97.51%
+ Time  <span class="sgr90">(</span><span class="sgr34"><span class="sgr1">median</span></span><span class="sgr90">):     </span><span class="sgr34"><span class="sgr1">271.987 μs              </span></span><span class="sgr90">┊</span> GC <span class="sgr90">(</span>median<span class="sgr90">):    </span> 0.00%
+ Time  <span class="sgr90">(</span><span class="sgr32"><span class="sgr1">mean</span></span> ± <span class="sgr32">σ</span><span class="sgr90">):   </span><span class="sgr32"><span class="sgr1">425.628 μs</span></span> ± <span class="sgr32"> 1.305 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>mean ± σ<span class="sgr90">):  </span>24.82% ±  7.90%
 
-  ▄██▇▆▅▄▄▂▂      ▁ ▁      ▁ ▁▁                         ▂▆▇▆▄▂ ▂
-  ███████████▇▇██████▆▆▇▇▇██████▇▇█▆▆▆▆▄▅▄▃▃▄▄▁▃▃▁▁▁▁▁▁▄██████ █
-  468 μs        Histogram: log(frequency) by time       879 μs &lt;
+    ▅█▂ <span class="sgr34"> </span>                                   <span class="sgr32"> </span>                   
+  ▂▇███▇<span class="sgr34">▅</span>▄▄▃▃▃▂▂▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂<span class="sgr32">▃</span>▃▄▄▄▃▄▄▃▂▂▁▁▁▁▁▁▁ ▂
+  245 μs<span class="sgr90">          Histogram: frequency by time</span>          504 μs <span class="sgr1">&lt;</span>
 
- Memory estimate: 923.52 KiB, allocs estimate: 11181.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day05/">« Day 05: Supply Stacks</a><a class="docs-footer-nextpage" href="../day07/">Day 07: No Space Left On Device »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 7 December 2022 07:01">Wednesday 7 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ Memory estimate<span class="sgr90">: </span><span class="sgr33">923.52 KiB</span>, allocs estimate<span class="sgr90">: </span><span class="sgr33">11181</span>.</code></pre><pre><code class="language-julia hljs">with_cache(&quot;../artifacts/day06-benchmark-3.bin&quot;) do
+    @benchmark find_start_marker_bitmask(14, input)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 10000 samples with 1 evaluation.
+ Range <span class="sgr90">(</span><span class="sgr36"><span class="sgr1">min</span></span> … <span class="sgr35">max</span><span class="sgr90">):  </span><span class="sgr36"><span class="sgr1">12.393 μs</span></span> … <span class="sgr35">180.870 μs</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>min … max<span class="sgr90">): </span>0.00% … 0.00%
+ Time  <span class="sgr90">(</span><span class="sgr34"><span class="sgr1">median</span></span><span class="sgr90">):     </span><span class="sgr34"><span class="sgr1">13.224 μs               </span></span><span class="sgr90">┊</span> GC <span class="sgr90">(</span>median<span class="sgr90">):    </span>0.00%
+ Time  <span class="sgr90">(</span><span class="sgr32"><span class="sgr1">mean</span></span> ± <span class="sgr32">σ</span><span class="sgr90">):   </span><span class="sgr32"><span class="sgr1">13.314 μs</span></span> ± <span class="sgr32">  1.881 μs</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>mean ± σ<span class="sgr90">):  </span>0.00% ± 0.00%
+
+                  ▃▇<span class="sgr34">█</span>▆<span class="sgr32">▂</span>▁                                        
+  ▁▁▁▁▂▃▃▃▄▃▄▅▅▅▅▆██<span class="sgr34">█</span>█<span class="sgr32">█</span>█▇▆▄▄▃▃▂▂▂▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ▂
+  12.4 μs<span class="sgr90">         Histogram: frequency by time</span>         15.1 μs <span class="sgr1">&lt;</span>
+
+ Memory estimate<span class="sgr90">: </span><span class="sgr33">4.23 KiB</span>, allocs estimate<span class="sgr90">: </span><span class="sgr33">4</span>.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day05/">« Day 05: Supply Stacks</a><a class="docs-footer-nextpage" href="../day07/">Day 07: No Space Left On Device »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 7 December 2022 20:38">Wednesday 7 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
