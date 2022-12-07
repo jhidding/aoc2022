@@ -3,6 +3,11 @@
 module AOC2022
 
 using Printf
+
+# Introduced on day 6
+include("CircularBuffers.jl")
+using .CircularBuffers
+
 export @day
 
 advent = filter(f -> occursin(r"day.*\.jl", f), readdir(@__DIR__))

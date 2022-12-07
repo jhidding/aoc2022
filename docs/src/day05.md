@@ -101,7 +101,7 @@ using AOC2022  # hide
 @day 5
 ```
 
-On Reddit [u/i_have_no_biscuits](https://www.reddit.com/r/adventofcode/comments/zdbvzn/2022_day_5_a_christmas_day_5_message_for_you_all/?utm_source=share&utm_medium=web2x&context=3) constructed an additional input with a hidden message:
+On Reddit [`u/i_have_no_biscuits`](https://www.reddit.com/r/adventofcode/comments/zdbvzn/2022_day_5_a_christmas_day_5_message_for_you_all/?utm_source=share&utm_medium=web2x&context=3) constructed an additional input with a hidden message:
 
 ```@example 1
 open(AOC2022.Day05.main, "../../data/day05-msg.txt", "r")
@@ -113,25 +113,25 @@ open(AOC2022.Day05.main, "../../data/day05-msg.txt", "r")
 function Base.parse(::Type{Move}, line)
     r = r"move (\d+) from (\d+) to (\d+)"
     m = match(r, line)
-    if m === nothing
-        error("Parse error, not a Move: $line")
-    end
-    Move(parse.(Int, m)...)
+    isnothing(m) ? nothing : Move(parse.(Int, m)...)
 end
 
 function read_input(io::IO)
     lines = collect(readlines(io))
     crates = [[] for _ in 1:9]
-    for i in 1:8
+    for l in lines
+        if !contains(l, r"\[[A-Z]\]")
+            break
+        end
         for j in 1:9
-            c = lines[i][(j-1)*4+2]
+            c = l[(j-1)*4+2]
             if c != ' '
                 pushfirst!(crates[j], c)
             end
         end
     end
 
-    instructions = lines[11:end] .|> l->parse(Move, l)
+    instructions = filter(!isnothing, lines .|> l->parse(Move, l))
     State(crates, instructions)
 end
 ```
