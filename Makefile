@@ -10,7 +10,8 @@ $(days):
 	@julia --project=. -e 'using AOC2022; @day $(@:day%=%)' | $(indent)
 
 serve:
-	julia --project=docs/ -ie 'using Revise, AOC2022, LiveServer; servedocs()'
+	julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+	julia --project=docs/ -ie 'using Revise; using AOC2022, LiveServer; servedocs()'
 
 docs:
 	julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'

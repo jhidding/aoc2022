@@ -21,6 +21,7 @@ function main(io::IO)
 end
 
 <<day06-circular-buffer>>
+<<day06-int-mask>>
 
 end  # module
 ```
@@ -142,20 +143,51 @@ function Base.push!(b::CircularBuffer{T}, item::T) where T
     b.length = min(length(b.content), b.length+1)
 end
 
+function pushpop!(b::CircularBuffer{T}, item::T) where T
+    oldvalue = b.content[b.endloc]
+    b.content[b.endloc] = item
+    b.endloc = mod1(b.endloc+1, length(b.content))
+end
+
 Base.allunique(b::CircularBuffer{T}) where T = allunique(content(b))
 ```
 
+## Using a bitset
+
+``` {.julia #day06-circular-buffer}
+function find_start_marker_cb(n::Int, s::String)
+    b = CircularBuffer{Char}(Vector{Char}(s[1:n]))
+    bits = 0
+    for c in s[1:n]
+        bits &= (1 << (c - 'a'))
+    end
+    for (i, c) in enumerate(s[n+1:end])
+        out = pushpop!(b, c)
+        if length(b) == n && allunique(b)
+            return i+n
+        end
+    end
+    -1
+end
+```
 
 ## Benchmarks
 The crazy thing is: the circular buffer version is faster than the first version, which I don't understand at all.
 
 ```@example 1
 using BenchmarkTools
+using AOC2022: with_cache
 using AOC2022.Day06: find_start_marker, find_start_marker_cb
+
 input = open(readline, "../../data/day06.txt", "r")
-@benchmark find_start_marker(14, input)
+
+with_cache("../artifacts/day06-benchmark-1.bin") do
+    @benchmark find_start_marker(14, input)
+end
 ```
 
 ```@example 1
-@benchmark find_start_marker_cb(14, input)
+with_cache("../artifacts/day06-benchmark-2.bin") do
+    @benchmark find_start_marker_cb(14, input)
+end
 ```

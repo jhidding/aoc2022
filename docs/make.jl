@@ -16,7 +16,10 @@ sources = filter(is_markdown, readdir(joinpath(@__DIR__, "src"), join=true))
 path = mktempdir()
 noweb_label_pass.(sources, path)
 
-makedocs(source = path, sitename="Advent Of Code 2022 solutions")
+makedocs(
+    source=path,
+    sitename="Advent Of Code 2022 solutions",
+    format=Documenter.HTML(ansicolor=true))
 deploydocs(
     repo = "github.com/jhidding/aoc2022.git"
 )
