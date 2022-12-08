@@ -9,7 +9,7 @@ using Serialization
 include("CircularBuffers.jl")
 using .CircularBuffers
 
-export @day
+export @day, with_cache
 
 advent = filter(f -> occursin(r"day.*\.jl", f), readdir(@__DIR__))
 
