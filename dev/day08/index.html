@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 08 · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li><a class="tocitem" href="../day06/">Day 06: Tuning Trouble</a></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li><li class="is-active"><a class="tocitem" href>Day 08</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 08</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 08</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-08"><a class="docs-heading-anchor" href="#Day-08">Day 08</a><a id="Day-08-1"></a><a class="docs-heading-anchor-permalink" href="#Day-08" title="Permalink"></a></h1><p>I feel there must be a smarter solution to this problem.</p><div class="noweb-label">file:<i>src/day08.jl</i></div><pre><code class="language- julia hljs">module Day08
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 08: Treetop Tree House · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li><a class="tocitem" href="../day06/">Day 06: Tuning Trouble</a></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li><li class="is-active"><a class="tocitem" href>Day 08: Treetop Tree House</a><ul class="internal"><li><a class="tocitem" href="#Plot"><span>Plot</span></a></li><li><a class="tocitem" href="#Second-attempt"><span>Second attempt</span></a></li><li><a class="tocitem" href="#Benchmarks"><span>Benchmarks</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 08: Treetop Tree House</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 08: Treetop Tree House</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-08:-Treetop-Tree-House"><a class="docs-heading-anchor" href="#Day-08:-Treetop-Tree-House">Day 08: Treetop Tree House</a><a id="Day-08:-Treetop-Tree-House-1"></a><a class="docs-heading-anchor-permalink" href="#Day-08:-Treetop-Tree-House" title="Permalink"></a></h1><p>I feel there must be a smarter solution to this problem.</p><div class="noweb-label">file:<i>src/day08.jl</i></div><pre><code class="language- julia hljs">module Day08
 
-export read_input, mark_visible, viewing_distance, scenic_score
+export read_input, mark_visible, viewing_distance, viewing_distance_2, scenic_score, scenic_score_2
 
 function read_input(io::IO)
     foldl(hcat, readlines(io) .|&gt; l-&gt;Vector{Char}(l) .- &#39;0&#39;)&#39;
@@ -49,6 +49,8 @@ function scenic_score(forest::AbstractMatrix{Int})
     s1 .* s2 .* s3 .* s4
 end
 
+&lt;&lt;day08-second-attempt&gt;&gt;
+
 function main(io::IO)
     input = read_input(io)
     visible = mark_visible(input)
@@ -57,19 +59,65 @@ function main(io::IO)
     println(&quot;Part 2: $(maximum(score))&quot;)
 end
 
-end  # module</code></pre><pre><code class="language-julia hljs">using AOC2022.Day08
+end  # module</code></pre><pre><code class="language-julia hljs">@day 8</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Part 1: 1715
+Part 2: 374400</code></pre><h2 id="Plot"><a class="docs-heading-anchor" href="#Plot">Plot</a><a id="Plot-1"></a><a class="docs-heading-anchor-permalink" href="#Plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">using AOC2022.Day08
 using CairoMakie
 
 CairoMakie.activate!(type = &quot;svg&quot;)
 forest = open(read_input, &quot;../../data/day08.txt&quot;, &quot;r&quot;)
 xs = collect(Float32, 1:size(forest)[1])
 ys = collect(Float32, 1:size(forest)[2])
-fig = Figure()
-ax1 = Axis(fig[1,1])
-ax2 = Axis(fig[1,2])
-ax3 = Axis(fig[1,3])
-heatmap!(ax1, xs, ys, convert(Matrix{Float32}, forest))
-heatmap!(ax2, xs, ys, convert(Matrix{Float32}, mark_visible(forest)))
-heatmap!(ax3, xs, ys, convert(Matrix{Float32}, scenic_score(forest)))
+fig = Figure(resolution=(1000,350))
+ax1 = Axis(fig[1,1], aspect=1)
+ax2 = Axis(fig[1,2], aspect=1)
+ax3 = Axis(fig[1,3], aspect=1)
+heatmap!(ax1, xs, ys, forest; fxaa=false)
+heatmap!(ax2, xs, ys, mark_visible(forest); fxaa=false)
+heatmap!(ax3, xs, ys, scenic_score(forest).^0.25; fxaa=false)
 save(&quot;day08.svg&quot;, fig)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">CairoMakie.Screen{SVG}
-</code></pre><p><img src="../day08.svg" alt="My forest"/></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day07/">« Day 07: No Space Left On Device</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 8 December 2022 06:34">Thursday 8 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+</code></pre><p><img src="../day08.svg" alt="My forest"/></p><h2 id="Second-attempt"><a class="docs-heading-anchor" href="#Second-attempt">Second attempt</a><a id="Second-attempt-1"></a><a class="docs-heading-anchor-permalink" href="#Second-attempt" title="Permalink"></a></h2><p>A slightly different approach, keeps track of all distances of heights 0 to 9. Depending on the height map this could be faster, but in practice it isn&#39;t.</p><div class="noweb-label">⪡day08-second-attempt⪢≣</div><pre><code class="language- julia hljs">function viewing_distance_2(treeline::AbstractVector{Int})
+    result = zeros(Int, size(treeline))
+    dists = zeros(Int, 10)
+    for (i, x) in enumerate(treeline)
+        result[i] = dists[x+1]
+        dists[x+2:end] .+= 1
+        dists[1:x+1] .= 1
+    end
+    return result
+end
+
+function scenic_score_2(forest::AbstractMatrix{Int})
+    s1 = foldl(hcat, viewing_distance_2(c) for c in eachcol(forest))
+    s2 = foldl(hcat, reverse(viewing_distance_2(reverse(c))) for c in eachcol(forest))
+    s3 = foldl(hcat, viewing_distance_2(c) for c in eachcol(forest&#39;))&#39;
+    s4 = foldl(hcat, reverse(viewing_distance_2(reverse(c))) for c in eachcol(forest&#39;))&#39;
+    s1 .* s2 .* s3 .* s4
+end</code></pre><h2 id="Benchmarks"><a class="docs-heading-anchor" href="#Benchmarks">Benchmarks</a><a id="Benchmarks-1"></a><a class="docs-heading-anchor-permalink" href="#Benchmarks" title="Permalink"></a></h2><pre><code class="language-julia hljs">using BenchmarkTools
+using AOC2022
+using AOC2022.Day08
+
+input = open(read_input, &quot;../../data/day08.txt&quot;, &quot;r&quot;)
+
+with_cache(&quot;../artifacts/day08-benchmark-1.bin&quot;) do
+    @benchmark scenic_score(input)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 2744 samples with 1 evaluation.
+ Range <span class="sgr90">(</span><span class="sgr36"><span class="sgr1">min</span></span> … <span class="sgr35">max</span><span class="sgr90">):  </span><span class="sgr36"><span class="sgr1">1.237 ms</span></span> … <span class="sgr35">7.860 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>min … max<span class="sgr90">): </span> 0.00% … 70.10%
+ Time  <span class="sgr90">(</span><span class="sgr34"><span class="sgr1">median</span></span><span class="sgr90">):     </span><span class="sgr34"><span class="sgr1">1.337 ms             </span></span><span class="sgr90">┊</span> GC <span class="sgr90">(</span>median<span class="sgr90">):    </span> 0.00%
+ Time  <span class="sgr90">(</span><span class="sgr32"><span class="sgr1">mean</span></span> ± <span class="sgr32">σ</span><span class="sgr90">):   </span><span class="sgr32"><span class="sgr1">1.818 ms</span></span> ± <span class="sgr32">1.301 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>mean ± σ<span class="sgr90">):  </span>22.69% ± 21.58%
+
+  █<span class="sgr34">▆</span>▅▄▃▂ <span class="sgr32"> </span>                                      ▁▁▂▁▁▁      ▁
+  █<span class="sgr34">█</span>█████<span class="sgr32">█</span>▆▆▃▃▃▁▃▁▄▁▁▁▁▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▄▇██████▆▆▆▅▆ █
+  1.24 ms<span class="sgr90">     Histogram: <span class="sgr1">log(</span>frequency<span class="sgr1">)</span> by time</span>      6.1 ms <span class="sgr1">&lt;</span>
+
+ Memory estimate<span class="sgr90">: </span><span class="sgr33">15.74 MiB</span>, allocs estimate<span class="sgr90">: </span><span class="sgr33">1526</span>.</code></pre><pre><code class="language-julia hljs">with_cache(&quot;../artifacts/day08-benchmark-2.bin&quot;) do
+    @benchmark scenic_score_2(input)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">BenchmarkTools.Trial: 1623 samples with 1 evaluation.
+ Range <span class="sgr90">(</span><span class="sgr36"><span class="sgr1">min</span></span> … <span class="sgr35">max</span><span class="sgr90">):  </span><span class="sgr36"><span class="sgr1">2.095 ms</span></span> … <span class="sgr35">11.560 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>min … max<span class="sgr90">): </span> 0.00% … 72.53%
+ Time  <span class="sgr90">(</span><span class="sgr34"><span class="sgr1">median</span></span><span class="sgr90">):     </span><span class="sgr34"><span class="sgr1">2.229 ms              </span></span><span class="sgr90">┊</span> GC <span class="sgr90">(</span>median<span class="sgr90">):    </span> 0.00%
+ Time  <span class="sgr90">(</span><span class="sgr32"><span class="sgr1">mean</span></span> ± <span class="sgr32">σ</span><span class="sgr90">):   </span><span class="sgr32"><span class="sgr1">3.076 ms</span></span> ± <span class="sgr32"> 2.522 ms</span>  <span class="sgr90">┊</span> GC <span class="sgr90">(</span>mean ± σ<span class="sgr90">):  </span>26.56% ± 23.06%
+
+  █<span class="sgr34">▆</span>▁    <span class="sgr32"> </span>                                               ▁▃▁  
+  █<span class="sgr34">█</span>█▆▃▄▁<span class="sgr32">▁</span>▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▃▅███ █
+  2.09 ms<span class="sgr90">      Histogram: <span class="sgr1">log(</span>frequency<span class="sgr1">)</span> by time</span>     10.8 ms <span class="sgr1">&lt;</span>
+
+ Memory estimate<span class="sgr90">: </span><span class="sgr33">19.45 MiB</span>, allocs estimate<span class="sgr90">: </span><span class="sgr33">41126</span>.</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day07/">« Day 07: No Space Left On Device</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 8 December 2022 21:42">Thursday 8 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
