@@ -11,9 +11,6 @@ end
 
 Instruction(opcode::Symbol, args::Int...) = Instruction(opcode, [args...])
 
-construct(m::Union{Nothing,RegexMatch}, f::Function) =
-    isnothing(m) ? nothing : f(m...)
-
 choice(fs::Function ...) = function(l::AbstractString)
     for f in fs
         x = f(l)
@@ -33,52 +30,16 @@ function read_input(inp::IO)
     readlines(inp) .|> parse_instr
 end
 
-cycle = quote
-    put!(chan, c * x)
-    c += 1
-end
-
-function compile(instr::Instruction)
-    if instr.opcode === :addx
-        quote
-            $(fill(cycle, 3)...)
-            x += $(instr.args[1])
-        end
-    elseif instr.opcode === :noop
-        cycle
-    end
-end
-
-function compile(instr::AbstractVector{Instruction})
-    quote
-        function (x::Int, c::Int)
-            Channel{Int}() do chan
-                $((instr .|> compile)...)
-            end
-        end
-    end
-end
-
-function run_program(instr::AbstractVector{Instruction})
-    x = 1
-    Channel() do chan
-        cycle() = begin put!(chan, x) end
-        for i in instr
-            if i.opcode === :addx
-                cycle(); cycle()
-                x += i.args[1]
-            else
-                cycle()
-            end
-        end
-    end
-end
-
-function main(inp::IO)
+function main(inp::IO, out::IO)
     input = read_input(inp)
-    out = run_program(input)
-    part1 = sum(collect(enumerate(run_program(input)) .|> ((c, x),) -> c*x)[20:40:220])
-    println("Part 1: $part1")
+    part1 = sum(collect(enumerate(run_program(input)) .|>
+                ((c, x),) -> c*x)[20:40:220])
+    println(out, "Part 1: $part1")
+    crt = reshape(repeat(0:39, 6), 40, 6)'
+    x = reshape(collect(run_program(input)), 40, 6)'
+    crt_lines = String.(eachrow(abs.(crt - x) .|> x -> x > 1 ? ' ' : '█'))
+    println(out, "Part 2:")
+    foreach(l->println(out, "         " * l), crt_lines)
 end
 
 end  # module
