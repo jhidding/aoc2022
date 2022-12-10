@@ -29,6 +29,21 @@ function read_input(inp::IO)
     readlines(inp) .|&gt; parse_instr
 end
 
+function run_program(instr::AbstractVector{Instruction})
+    x = 1
+    Channel() do chan
+        cycle() = begin put!(chan, x) end
+        for i in instr
+            if i.opcode === :addx
+                cycle(); cycle()
+                x += i.args[1]
+            else
+                cycle()
+            end
+        end
+    end
+end
+
 function main(inp::IO, out::IO)
     input = read_input(inp)
     part1 = sum(collect(enumerate(run_program(input)) .|&gt;
@@ -38,8 +53,15 @@ function main(inp::IO, out::IO)
     x = reshape(collect(run_program(input)), 40, 6)&#39;
     crt_lines = String.(eachrow(abs.(crt - x) .|&gt; x -&gt; x &gt; 1 ? &#39; &#39; : &#39;█&#39;))
     println(out, &quot;Part 2:&quot;)
-    foreach(l-&gt;println(out, &quot;         &quot; * l), crt_lines)
+    foreach(l-&gt;println(out, l), crt_lines)
 end
 
-end  # module</code></pre><pre><code class="language- hljs">using AOC2022
-@day 10</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day09/">« Day 09: Rope Bridge</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Saturday 10 December 2022 08:17">Saturday 10 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end  # module</code></pre><pre><code class="language-julia hljs">@day 10</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr48_2" style="background:#a0143c"> <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span><span class="sgr37">  <span class="sgr1">Day 10                          </span></span></span>
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    Part 1: 13920
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    Part 2:
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    ████  ██  █    █  █ ███  █    ████   ██
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    █    █  █ █    █  █ █  █ █    █       █
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    ███  █    █    ████ ███  █    ███     █
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    █    █ ██ █    █  █ █  █ █    █       █
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    █    █  █ █    █  █ █  █ █    █    █  █
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    ████  ███ ████ █  █ ███  ████ █     ██</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day09/">« Day 09: Rope Bridge</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Saturday 10 December 2022 08:50">Saturday 10 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
