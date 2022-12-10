@@ -17,12 +17,12 @@ function read_input(io::IO)
     readlines(io) .|> to_range_pair
 end
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input = read_input(io)
     part1 = length(filter(((a, b),)->contains(a,b)||contains(b,a), input))
-    println("Part 1: $part1")
+    println(io_out, "Part 1: $part1")
     part2 = length(filter(x->overlap(x...), input))
-    println("Part 2: $part2")
+    println(io_out, "Part 2: $part2")
 end
 
 end  # module

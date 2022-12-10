@@ -71,12 +71,12 @@ function scenic_score_2(forest::AbstractMatrix{Int})
 end
 # ~\~ end
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input = read_input(io)
     visible = mark_visible(input)
-    println("Part 1: $(sum(visible))")
+    println(io_out, "Part 1: $(sum(visible))")
     score = scenic_score(input)
-    println("Part 2: $(maximum(score))")
+    println(io_out, "Part 2: $(maximum(score))")
 end
 
 end  # module

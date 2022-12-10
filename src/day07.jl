@@ -102,17 +102,17 @@ end
 
 const MB = 1000000
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input::Vector{Console} = read_input(io)
     tree = build_tree(input)
     flat = flatten(tree)
     part1 = sum(d.size for d in flat if d.size <= 100000)
-    println("Part 1: $part1")
+    println(io_out, "Part 1: $part1")
 
     space_free = 70MB - tree.size
     need_to_free = 30MB - space_free
     (part2, _) = findmin(d->d.size, filter(d -> d.size >= need_to_free, flat))
-    println("Part 2: $part2")
+    println(io_out, "Part 2: $part2")
 end
 
 end  # module
