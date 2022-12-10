@@ -6,9 +6,12 @@ Adding up numbers! I solved today's exercise in both Julia and Rust, as I'm stil
 The first thing we need to do (in any Rust project) is to define an `Error` type, and a specialised `Result`. It is idiomatic to have specialised `Result` this way. A lot of functions in Rust return their own kind of `Result`, which we can `map_err` to ours. This way we can collect errors from different sources. For now, we just have input errors.
 
 ``` {.rust file=src/aoc.rs}
+#![allow(dead_code)]
+
 #[derive(Debug)]
 pub enum Error {
-    Input(String)
+    Input(String),
+    Value(String)
 }
 
 pub type Result<T> = core::result::Result<T, Error>;

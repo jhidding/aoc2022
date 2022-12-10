@@ -1,5 +1,5 @@
 # Day 04: Camp Cleanup
-Overlappin ranges. In the first problem we need to see if two ranges completely overlap. I couldn't think of a faster way than to check that either A contains B or B contains A. This is a stronger bound than what we have in the second part. To check for overlap we can compare the maximum of start values with the minimum of stop values.
+Overlapping ranges. In the first problem we need to see if two ranges completely overlap. I couldn't think of a faster way than to check that either A contains B or B contains A. This is a stronger bound than what we have in the second part. To check for overlap we can compare the maximum of start values with the minimum of stop values.
 
 ``` {.julia file=src/day04.jl}
 module Day04
