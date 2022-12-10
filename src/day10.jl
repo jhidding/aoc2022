@@ -30,6 +30,21 @@ function read_input(inp::IO)
     readlines(inp) .|> parse_instr
 end
 
+function run_program(instr::AbstractVector{Instruction})
+    x = 1
+    Channel() do chan
+        cycle() = begin put!(chan, x) end
+        for i in instr
+            if i.opcode === :addx
+                cycle(); cycle()
+                x += i.args[1]
+            else
+                cycle()
+            end
+        end
+    end
+end
+
 function main(inp::IO, out::IO)
     input = read_input(inp)
     part1 = sum(collect(enumerate(run_program(input)) .|>
@@ -39,7 +54,7 @@ function main(inp::IO, out::IO)
     x = reshape(collect(run_program(input)), 40, 6)'
     crt_lines = String.(eachrow(abs.(crt - x) .|> x -> x > 1 ? ' ' : '█'))
     println(out, "Part 2:")
-    foreach(l->println(out, "         " * l), crt_lines)
+    foreach(l->println(out, l), crt_lines)
 end
 
 end  # module
