@@ -64,7 +64,8 @@ module Day09Movie
 
 include("day09.jl")
 using .Day09
-using GLMakie
+#using GLMakie
+using CairoMakie
 
 export plot_state!, State, make_move!, read_input
 
