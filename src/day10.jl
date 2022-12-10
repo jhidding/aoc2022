@@ -2,6 +2,8 @@
 # ~\~ begin <<docs/src/day10.md|src/day10.jl>>[init]
 module Day10
 
+using Base: splat
+using Base.Iterators: map as imap, drop, partition
 export read_input, run_program
 
 struct Instruction
@@ -27,13 +29,13 @@ function read_input(inp::IO)
     parse_noop(l) = match(noop_instr, l) |>
         m -> isnothing(m) ? nothing : Instruction(:noop)
     parse_instr(l) = choice(parse_addx, parse_noop)(l)
-    readlines(inp) .|> parse_instr
+    eachline(inp) .|> parse_instr
 end
 
-function run_program(instr::AbstractVector{Instruction})
+function run_program(instr)
     x = 1
     Channel() do chan
-        cycle() = begin put!(chan, x) end
+        cycle() = put!(chan, x)
         for i in instr
             if i.opcode === :addx
                 cycle(); cycle()
@@ -45,17 +47,72 @@ function run_program(instr::AbstractVector{Instruction})
     end
 end
 
+
+f2(c, x) = abs((c-1) % 40 - x) <= 1 ? '█' : ' '
+
+part2(input) =
+    join(reshape(enumerate(run_program(input)) .|> splat(f2), 40, 6) |>
+         eachcol .|> String, "\n")
+
 function main(inp::IO, out::IO)
     input = read_input(inp)
-    part1 = sum(collect(enumerate(run_program(input)) .|>
-                ((c, x),) -> c*x)[20:40:220])
-    println(out, "Part 1: $part1")
-    crt = reshape(repeat(0:39, 6), 40, 6)'
-    x = reshape(collect(run_program(input)), 40, 6)'
-    crt_lines = String.(eachrow(abs.(crt - x) .|> x -> x > 1 ? ' ' : '█'))
-    println(out, "Part 2:")
-    foreach(l->println(out, l), crt_lines)
+    println(out, "Part 1: $(part1_iterated(input))")
+    println(out, "Part 2:\n$(part2(input))")
 end
+
+# ~\~ begin <<docs/src/day10.md|iterators-every>>[init]
+export every
+
+struct Every{I}
+    n::Int
+    xs::I
+
+    function Every(n::Int, xs::I) where {I}
+        new{I}(n, xs)
+    end
+end
+
+every(n::Int, xs) = Every(n, xs)
+Base.eltype(it::Every) = eltype(it.xs)
+Base.IteratorSize(::Type{Every{I}}) where {I} = Base.IteratorSize(I)
+Base.length(it::Every) = length(it.xs) ÷ it.n
+Base.size(it::Every) = (length(it),)
+
+function Base.iterate(it::Every)
+    y = iterate(it.xs)
+    isnothing(y) && return nothing
+    value = y[1]
+    for i in 1:it.n-1
+        y = iterate(it.xs, y[2])
+        isnothing(y) && return (value, nothing)
+    end
+    return (value, y[2])
+end
+
+function Base.iterate(it::Every, st)
+    isnothing(st) && return nothing
+    y = iterate(it.xs, st)
+    isnothing(y) && return nothing
+    value = y[1]
+    for i in 1:it.n-1
+        y = iterate(it.xs, y[2])
+        isnothing(y) && return (value, nothing)
+    end
+    return (value, y[2])
+end
+# ~\~ end
+# ~\~ begin <<docs/src/day10.md|day10-part1>>[init]
+export part1_collected, part1_collected2, part1_iterated
+
+part1_collected(input) =
+    sum(collect(enumerate(run_program(input)))[20:40:220] .|> splat(*))
+
+part1_collected2(input) =
+    sum(enumerate(collect(run_program(input))[20:40:220]) .|> ((c, x),) -> (c*40-20)*x)
+
+part1_iterated(input) =
+    sum(imap(splat(*), every(40, drop(enumerate(run_program(input)), 19))))
+# ~\~ end
 
 end  # module
 # ~\~ end
