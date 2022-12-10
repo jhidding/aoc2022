@@ -101,12 +101,12 @@ function read_input(io::IO=stdin)
     map(sub -> parse.(Int, sub), split_on(readlines(io), ""))
 end
 
-function main(io::IO=stdin)
-    input = read_input(io)
+function main(io_in::IO, io_out::IO=stdout)
+    input = read_input(io_in)
     part1 = maximum(sum.(input))
-    println("Part 1: $part1")
+    println(io_out, "Part 1: $part1")
     part2 = sum(sort(sum.(input))[end-3:end])
-    println("Part 2: $part2")
+    println(io_out, "Part 2: $part2")
 end
 
 end  # module

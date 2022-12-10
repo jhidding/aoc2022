@@ -10,10 +10,10 @@ read_input(io::IO) = [(line[1]-'A', line[3]-'X') for line in readlines(io)]
 score_1((a, b)::Tuple{Int,Int}) = mod(b - a + 1, 3) * 3 + b + 1
 score_2((a, b)::Tuple{Int,Int}) = b * 3 + mod(a + b - 1, 3) + 1
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input = read_input(io)
-    println("Part 1: $(sum(score_1.(input)))")
-    println("Part 2: $(sum(score_2.(input)))")
+    println(io_out, "Part 1: $(sum(score_1.(input)))")
+    println(io_out, "Part 2: $(sum(score_2.(input)))")
 end
 
 end

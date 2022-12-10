@@ -14,13 +14,13 @@ function find_start_marker(n::Int, s::String)
     nothing
 end
 
-function main(io::IO)
-    input = readline(io)
-    println("Part 1: $(find_start_marker(4, input))")
-    println("Part 2: $(find_start_marker(14, input))")
-end
-
 <<day06-circular-buffer>>
+
+function main(io::IO, io_out::IO=stdout)
+    input = readline(io)
+    println(io_out, "Part 1: $(find_start_marker_bitmask(4, input))")
+    println(io_out, "Part 2: $(find_start_marker_bitmask(14, input))")
+end
 
 end  # module
 ```

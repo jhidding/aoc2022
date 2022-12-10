@@ -64,12 +64,12 @@ function read_input(io::IO)
 end
 # ~\~ end
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input = read_input(io)
     part1 = run(crate_mover_9000, deepcopy(input))
-    println("Part 1: $(last.(part1.crates) |> String)")
+    println(io_out,"Part 1: $(last.(part1.crates) |> String)")
     part2 = run(crate_mover_9001, deepcopy(input))
-    println("Part 2: $(last.(part2.crates) |> String)")
+    println(io_out,"Part 2: $(last.(part2.crates) |> String)")
 end
 
 end  # module

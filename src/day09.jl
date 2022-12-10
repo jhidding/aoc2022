@@ -2,6 +2,8 @@
 # ~\~ begin <<docs/src/day09.md|src/day09.jl>>[init]
 module Day09
 
+export read_input, State, make_move!
+
 const Pt2 = Tuple{Int,Int}
 
 struct Move
@@ -36,14 +38,14 @@ function make_move!(st::State, m::Move)
     end
 end
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input = read_input(io)
     st = State([(0,0), (0,0)], Set([(0,0)]))
     foreach(m->make_move!(st, m), input)
-    println("Part 1: $(length(st.history))")
+    println(io_out, "Part 1: $(length(st.history))")
     st = State(fill((0,0), 10), Set([(0,0)]))
     foreach(m->make_move!(st, m), input)
-    println("Part 2: $(length(st.history))")
+    println(io_out, "Part 2: $(length(st.history))")
 end
 
 end  # module

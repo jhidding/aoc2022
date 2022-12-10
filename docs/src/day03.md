@@ -26,12 +26,12 @@ end
 
 priority(c::Char) = islowercase(c) ? c - 'a' + 1 : c - 'A' + 27
 
-function main(io::IO)
+function main(io::IO, io_out::IO=stdout)
     input = readlines(io)
     part1 = input .|> split_half .|> ((a,b),) -> (a ∩ b)[1] .|> priority
-    println("Part 1: $(sum(part1))")
+    println(io_out, "Part 1: $(sum(part1))")
     part2 = eachcol(reshape(input, 3, :)) .|> a -> reduce(∩, a)[1] .|> priority
-    println("Part 2: $(sum(part2))")
+    println(io_out, "Part 2: $(sum(part2))")
 end
 
 end  # module
