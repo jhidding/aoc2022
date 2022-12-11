@@ -1,10 +1,131 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 11: · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li><a class="tocitem" href="../day06/">Day 06: Tuning Trouble</a></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li><li><a class="tocitem" href="../day08/">Day 08: Treetop Tree House</a></li><li><a class="tocitem" href="../day09/">Day 09: Rope Bridge</a></li><li><a class="tocitem" href="../day10/">Day 10: Cathode-Ray Tube</a></li><li class="is-active"><a class="tocitem" href>Day 11:</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 11:</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 11:</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-11:"><a class="docs-heading-anchor" href="#Day-11:">Day 11:</a><a id="Day-11:-1"></a><a class="docs-heading-anchor-permalink" href="#Day-11:" title="Permalink"></a></h1><div class="noweb-label">file:<i>src/day11.jl</i></div><pre><code class="language- julia hljs">module Day11
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 11: Monkey in the Middle · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li><a class="tocitem" href="../day06/">Day 06: Tuning Trouble</a></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li><li><a class="tocitem" href="../day08/">Day 08: Treetop Tree House</a></li><li><a class="tocitem" href="../day09/">Day 09: Rope Bridge</a></li><li><a class="tocitem" href="../day10/">Day 10: Cathode-Ray Tube</a></li><li class="is-active"><a class="tocitem" href>Day 11: Monkey in the Middle</a><ul class="internal"><li><a class="tocitem" href="#Parsing-input"><span>Parsing input</span></a></li><li><a class="tocitem" href="#Simulating-Monkeys"><span>Simulating Monkeys</span></a></li><li><a class="tocitem" href="#Running-the-lot"><span>Running the lot</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 11: Monkey in the Middle</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 11: Monkey in the Middle</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-11:-Monkey-in-the-Middle"><a class="docs-heading-anchor" href="#Day-11:-Monkey-in-the-Middle">Day 11: Monkey in the Middle</a><a id="Day-11:-Monkey-in-the-Middle-1"></a><a class="docs-heading-anchor-permalink" href="#Day-11:-Monkey-in-the-Middle" title="Permalink"></a></h1><p>Monkeys throwing around packets... I first tried this with some Julia meta-programming, but it turns out that good old static function composition is much faster. If I run Julia at <code>-O0</code> versus <code>-O3</code> the soft version is just a few procent slower, but the meta-programming version gets twice as fast (still twice as slow as the soft version). Basically LLVM is just too slow to make this an interesting option for now.</p><p>As for the problem: I reduced the numbers in size by taking the modulo with the product of all the primes that we are testing divisibility against.</p><h2 id="Parsing-input"><a class="docs-heading-anchor" href="#Parsing-input">Parsing input</a><a id="Parsing-input-1"></a><a class="docs-heading-anchor-permalink" href="#Parsing-input" title="Permalink"></a></h2><p>Today the input was given in the form of some quasi-yaml, so I wrote a quasi-yaml parser. This parser finds the indentation of each line and splits the contents on a colon. If the indentation was increased w.r.t. the previous step, we go one level deeper. If indentation decreased, we pop the stack until we&#39;re at the right indent level again. We get back a nested dictionary with string keys.</p><div class="noweb-label">⪡quasi-yaml⪢≣</div><pre><code class="language- julia hljs">mutable struct QYPair
+    value::String
+    child::Union{Nothing,Dict{String,QYPair}}
+end
+
+Base.getindex(qy::QYPair, s::AbstractString) = qy.child[s]
+
+function read_quasi_yaml(inp::IO)
+    result = Dict{String,QYPair}()
+    stack = [result]
+    prev = result
+    indents = [0]
+    line_r = r&quot;^(\s*)([^:]+):\s*([^:]*)$&quot;
+    for l in eachline(inp)
+        m = match(line_r, l)
+        isnothing(m) &amp;&amp; continue
+        new_indent = length(m[1])
+        if new_indent &gt; last(indents)
+            prev.child = Dict{String,QYPair}()
+            push!(stack, prev.child)
+            push!(indents, new_indent)
+        else
+            while new_indent &lt; last(indents)
+                pop!(stack)
+                pop!(indents)
+            end
+            @assert (new_indent == last(indents))
+        end
+        prev = QYPair(m[3], nothing)
+        last(stack)[m[2]] = prev
+    end
+    result
+end</code></pre><p>Once we have the quasi-yaml parsed, we can extract information on each monkey into a <code>MonkeySpec</code>.</p><div class="noweb-label">⪡monkey-spec⪢≣</div><pre><code class="language- julia hljs">struct MonkeySpec
+    start::Vector{Int}
+    operation::Expr
+    test_factor::Int
+    if_true::Int
+    if_false::Int
+end
 
 function read_input(inp::IO)
+    qy = read_quasi_yaml(inp)
+    monkeys = Vector{MonkeySpec}(undef, length(qy))
+    for (k, m) in qy
+        n = parse.(Int, match(r&quot;Monkey (\d+)&quot;, k)[1]) + 1
+        start = parse.(Int, split(m[&quot;Starting items&quot;].value, &quot;, &quot;))
+        operation = Meta.parse(m[&quot;Operation&quot;].value)
+        test_factor = parse(Int, match(r&quot;divisible by (\d+)&quot;, m[&quot;Test&quot;].value)[1])
+        action(s) = parse(Int, match(r&quot;throw to monkey (\d+)&quot;, s)[1]) + 1
+        if_true = action(m[&quot;Test&quot;][&quot;If true&quot;].value)
+        if_false = action(m[&quot;Test&quot;][&quot;If false&quot;].value)
+        monkeys[n] = MonkeySpec(start, operation, test_factor, if_true, if_false)
+    end
+    monkeys
+end</code></pre><h2 id="Simulating-Monkeys"><a class="docs-heading-anchor" href="#Simulating-Monkeys">Simulating Monkeys</a><a id="Simulating-Monkeys-1"></a><a class="docs-heading-anchor-permalink" href="#Simulating-Monkeys" title="Permalink"></a></h2><p>Now I have two implementations of monkey simulators: a higher order function and a code generator. The <code>soft</code> version uses knowledge about the limitations of the expressions that we can encounter, creating some closure to do the actual work.</p><div class="noweb-label">⪡monkey-simulator⪢≣</div><pre><code class="language- julia hljs">mutable struct Monkey
+    items::Vector{Int}
+    round::Function
+    count::Int
+end
+
+function send(m::Monkey, v::Int)
+    push!(m.items, v)
+end
+
+function monkey_soft(spec::MonkeySpec, worry_reduction::Function)
+    op = spec.operation.args[2].args[1]
+    num = spec.operation.args[2].args[3]
+    if num isa Int
+        func = op === :+ ? (x -&gt; x + num) : (x -&gt; x * num)
+    else
+        func = op === :+ ? (x -&gt; x + x) : (x -&gt; x * x)
+    end
+    function(self::Monkey, others::Vector{Monkey})
+        for old in self.items
+            self.count += 1
+            new = worry_reduction(func(old))
+            send(others[rem(new, spec.test_factor) == 0 ? spec.if_true : spec.if_false], new)
+        end
+        empty!(self.items)
+    end
+end</code></pre><p>The generated version uses the Julia integrated compiler to generate a function from the ingredients that we were given. This should give more efficient code, but has the overhead that we need to compile this function for every monkey. Currently, the Julia compiler is too slow to make this implementation competetive with the <code>soft</code> implementation.</p><div class="noweb-label">⪡monkey-simulator⪢⊞</div><pre><code class="language- julia hljs">function monkey_gen(spec::MonkeySpec, worry_reduction::Function)
+    @eval begin
+        function(self::Monkey, others::Vector{Monkey})
+            for old in self.items
+                self.count += 1
+                $(spec.operation)
+                new = $(worry_reduction)(new)
+
+                if rem(new, $(spec.test_factor)) == 0
+                    send(others[$(spec.if_true)], new)
+                else
+                    send(others[$(spec.if_false)], new)
+                end
+            end
+            empty!(self.items)
+        end
+    end
+end</code></pre><h2 id="Running-the-lot"><a class="docs-heading-anchor" href="#Running-the-lot">Running the lot</a><a id="Running-the-lot-1"></a><a class="docs-heading-anchor-permalink" href="#Running-the-lot" title="Permalink"></a></h2><div class="noweb-label">file:<i>src/day11.jl</i></div><pre><code class="language- julia hljs">module Day11
+
+&lt;&lt;quasi-yaml&gt;&gt;
+&lt;&lt;monkey-spec&gt;&gt;
+&lt;&lt;monkey-simulator&gt;&gt;
+
+init_monkeys(spec::Vector{MonkeySpec}, worry_reduction::Function) =
+    [Monkey(copy(s.start), monkey_soft(s, worry_reduction), 0) for s in spec]
+
+monkey_business(monkeys::Vector{Monkey}) =
+    *(sort(monkeys .|&gt; m -&gt; m.count)[end-1:end]...)
+
+function run_monkeys(monkeys::Vector{Monkey}, n_rounds::Int)
+    for _ in 1:n_rounds
+        for m in monkeys
+            Base.invokelatest(m.round, m, monkeys)
+        end
+    end
+    monkeys
 end
 
 function main(inp::IO, out::IO)
+    input = read_input(inp)
+    part1 = monkey_business(run_monkeys(init_monkeys(input, x -&gt; x ÷ 3), 20))
+    println(out,&quot;Part 1: $part1&quot;)
+    max_factor = foldl(*, (s.test_factor for s in input))
+    part2 = monkey_business(run_monkeys(init_monkeys(input, x -&gt; x % max_factor), 10000))
+    println(out, &quot;Part 2: $part2&quot;)
 end
 
-end  # module</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day10/">« Day 10: Cathode-Ray Tube</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Saturday 10 December 2022 21:37">Saturday 10 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end  # module</code></pre><pre><code class="language-julia hljs">@day 11</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr48_2" style="background:#a0143c"> <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span><span class="sgr37">  <span class="sgr1">Day 11                          </span></span></span>
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    Part 1: 119715
+ <span class="sgr38_2" style="color:#9664fa">🮐🮐🮐🮐🮐</span>    Part 2: 18085004878</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day10/">« Day 10: Cathode-Ray Tube</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Sunday 11 December 2022 12:19">Sunday 11 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
