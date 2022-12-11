@@ -1,5 +1,4 @@
 days := $(patsubst src/day%.jl,day%,$(wildcard src/day*.jl))
-indent := awk -e '{ print "  \033[34m┃\033[m " $$0 }'
 
 .PHONY: all docs repl $(days)
 
@@ -7,17 +6,16 @@ all:
 	julia --project=. -e 'using AOC2022; @runall'
 
 $(days):
-	@echo -e "\033[1mRunning day $(@:day%=%)\033[m"
-	@julia --project=. -e 'using AOC2022; @day $(@:day%=%)' | $(indent)
+	@julia --project=. -e 'using AOC2022; @day $(@:day%=%)'
 
-serve:
-	julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
-	julia --project=docs/ -ie 'using Revise; using AOC2022, LiveServer; servedocs()'
+serve: sysimage.so
+	julia --project=docs/ -Jsysimage.so -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+	julia --project=docs/ -Jsysimage.so -ie 'using Revise; using AOC2022, LiveServer; servedocs()'
 
-docs:
-	julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
-	julia --project=docs/ docs/make.jl
+docs: sysimage.so
+	julia --project=docs/ -Jsysimage.so -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+	julia --project=docs/ -Jsysimage.so docs/make.jl
 
 repl:
-	julia --project=. -i -e 'using Revise; using AOC2022'
+	julia --project=. -Jsysimage.so -i -e 'using Revise; using AOC2022'
 

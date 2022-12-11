@@ -2,3 +2,5 @@
 Cargo.lock
 docs/build
 Manifest.toml
+*.so
+
