@@ -12,7 +12,7 @@ using .CircularBuffers
 
 export @day, @runall, with_cache
 
-advent = filter(f -> occursin(r"day.*\.jl", f), readdir(@__DIR__))
+advent = filter(f -> occursin(r"day\d{2}.jl", f), readdir(@__DIR__))
 
 for day in advent
     include(day)
