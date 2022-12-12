@@ -65,12 +65,20 @@ function main(inp::IO, out::IO)
 
     function part1()
         neighbours(pt) = (nb for nb in (grid_neighbours .+ (pt,)) if in_bounds(nb) && ok_step(pt, nb))
-        grid_dijkstra(Int, size(input.height), input.start, x -> x == input.target, neighbours, dist_func)
+        grid_dijkstra(Int,
+            size(input.height),
+            input.start,
+            x -> x == input.target,
+            neighbours, dist_func)
     end
 
     function part2()
         neighbours(pt) = (nb for nb in (grid_neighbours .+ (pt,)) if in_bounds(nb) && ok_step(nb, pt))
-        grid_dijkstra(Int, size(input.height), input.target, x -> input.height[x] == 0, neighbours, dist_func)
+        grid_dijkstra(Int,
+            size(input.height),
+            input.target,
+            x -> input.height[x] == 0,
+            neighbours, dist_func)
     end
 
     result = part1()
