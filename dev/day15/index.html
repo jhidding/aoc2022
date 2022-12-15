@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Day 15: Beacon Exclusion Zone · Advent Of Code 2022 solutions</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Advent Of Code 2022 solutions</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Advent of Code 2022</a></li><li><a class="tocitem" href="../day01/">Day 01: Calorie Counting</a></li><li><a class="tocitem" href="../day02/">Day 02: Rock Paper Scissors</a></li><li><a class="tocitem" href="../day03/">Day 03: Rucksack Reorganization</a></li><li><a class="tocitem" href="../day04/">Day 04: Camp Cleanup</a></li><li><a class="tocitem" href="../day05/">Day 05: Supply Stacks</a></li><li><a class="tocitem" href="../day06/">Day 06: Tuning Trouble</a></li><li><a class="tocitem" href="../day07/">Day 07: No Space Left On Device</a></li><li><a class="tocitem" href="../day08/">Day 08: Treetop Tree House</a></li><li><a class="tocitem" href="../day09/">Day 09: Rope Bridge</a></li><li><a class="tocitem" href="../day10/">Day 10: Cathode-Ray Tube</a></li><li><a class="tocitem" href="../day11/">Day 11: Monkey in the Middle</a></li><li><a class="tocitem" href="../day12/">Day 12: Hill Climbing Algorithm</a></li><li><a class="tocitem" href="../day13/">Day 13: Distress Signal</a></li><li><a class="tocitem" href="../day14/">Day 14: Regolith Reservoir</a></li><li class="is-active"><a class="tocitem" href>Day 15: Beacon Exclusion Zone</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Day 15: Beacon Exclusion Zone</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Day 15: Beacon Exclusion Zone</a></li></ul></nav><div class="docs-right"><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Day-15:-Beacon-Exclusion-Zone"><a class="docs-heading-anchor" href="#Day-15:-Beacon-Exclusion-Zone">Day 15: Beacon Exclusion Zone</a><a id="Day-15:-Beacon-Exclusion-Zone-1"></a><a class="docs-heading-anchor-permalink" href="#Day-15:-Beacon-Exclusion-Zone" title="Permalink"></a></h1><p>Somehow, when I use Julia native ranges the runtime explodes. The current implementation still takes about 30 seconds to run. It could be faster to compute the intersection points between the boundaries of all the exclusion zones.</p><div class="noweb-label">file:<i>src/day15.jl</i></div><pre><code class="language- julia hljs">module Day15
+
+using DataStructures: SortedSet
+export range_at_y, Sensor, read_input
+
+const Pt = @NamedTuple {x::Int, y::Int}
+
+dist(a::Pt, b::Pt) = abs(b.x - a.x) + abs(b.y - a.y)
+
+struct Sensor
+    pos::Pt
+    beacon::Pt
+end
+
+range_at_y(y) = function(s::Sensor)
+    d = dist(s.pos, s.beacon)
+    if abs(s.pos.y - y) &lt; d
+        xrem = d - abs(y - s.pos.y)
+        MyRange(s.pos.x - xrem, s.pos.x + xrem)
+    else
+        nothing
+    end
+end
+
+Base.parse(::Type{Sensor}, s::AbstractString) = 
+    let m = match(r&quot;Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)&quot;, s)
+        isnothing(m) ? nothing : Sensor((x=parse(Int, m[1]), y=parse(Int, m[2])),
+                                        (x=parse(Int, m[3]), y=parse(Int, m[4])))
+    end
+
+filter_things(it) = filter(!isnothing, it)
+read_input(io::IO) = (eachline(io) .|&gt; l -&gt; parse(Sensor, l)) |&gt; filter_things
+
+struct MyRange
+    start::Int
+    stop::Int
+end
+
+overlap(a::MyRange, b::MyRange) =
+    max(a.start, b.start) &lt;= min(a.stop, b.stop)
+
+Base.isless(a::MyRange, b::MyRange) =
+    a.start &lt; b.start || (a.start == b.start &amp;&amp; a.stop &lt; b.stop)
+
+function Base.intersect(a::MyRange, b::MyRange)
+    x, y = max(a.start, b.start), min(a.stop, b.stop)
+    x &lt;= y ? MyRange(x, y) : nothing
+end
+
+struct RangeSet
+    ranges::Vector{MyRange}
+    RangeSet(x::MyRange) = new([x])
+    function RangeSet(xs::Vector{MyRange})
+        isempty(xs) &amp;&amp; return new([])
+        sort!(xs)
+        result = [xs[1]]
+        for x in xs[2:end]
+            if overlap(x, result[end])
+                result[end] = MyRange(result[end].start, max(result[end].stop, x.stop))
+            else
+                push!(result, x)
+            end
+        end
+        new(result)
+    end
+end
+
+Base.length(r::MyRange) = r.stop - r.start + 1
+Base.length(s::RangeSet) = sum(length.(s.ranges))
+
+function part2(input)
+    for y in 0:4000000
+        for s in input
+            m = RangeSet([intersect(range_at_y(y)(s),MyRange(0, 4000000))
+                          for s in input if !isnothing(range_at_y(y)(s))])
+            if length(m.ranges) == 2
+                return (m.ranges[1].stop + 1, y)
+            end
+        end
+    end
+    nothing
+end
+
+function main(inp::IO, out::IO)
+    input = read_input(inp)
+    part1 = RangeSet([(input .|&gt; range_at_y(2000000) |&gt; filter_things)...])
+    n_beacons = length(unique(filter(p-&gt;p.y==2000000, map(s-&gt;s.beacon, input))))
+    n_sensors = length(filter(p-&gt;p.y==2000000, map(s-&gt;s.pos, input)))
+    println(out, &quot;Part 1: $(length(part1)-n_beacons-n_sensors)&quot;)
+    (x, y) = part2(input)
+    println(out, &quot;Part 2: $(x * 4000000 + y)&quot;)
+end
+
+end  # module</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../day14/">« Day 14: Regolith Reservoir</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Thursday 15 December 2022 09:00">Thursday 15 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
