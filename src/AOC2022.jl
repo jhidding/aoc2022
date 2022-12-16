@@ -10,13 +10,14 @@ using Serialization
 include("CircularBuffers.jl")
 using .CircularBuffers
 
-export @day, @runall, with_cache
+export @day, @test, @runall, with_cache
 
 advent = filter(f -> occursin(r"day\d{2}.jl", f), readdir(@__DIR__))
 
 for day in advent
     include(day)
 end
+include("day05-figure.jl")
 
 function day_gen(n::Int)
     modname = Symbol(@sprintf "Day%02u" n)
@@ -36,9 +37,11 @@ function frieze()
     foldl(*, ["\033[38;2;$(r);$(g);$(b)m$(c)" for ((r,g,b), c) in zip(colors, chars)])
 end
 
-function decorated_day(n::Int)
+function decorated_day(n::Int, test::Bool=false)
     modname = Symbol(@sprintf "Day%02u" n)
-    input_file = joinpath(@__DIR__, @sprintf "../data/day%02u.txt" n)
+    input_file = test ?
+        joinpath(@__DIR__, @sprintf "../data/day%02u-test.txt" n) :
+        joinpath(@__DIR__, @sprintf "../data/day%02u.txt" n)
     quote
         n=$n
         println("\033[48;2;160;20;60m $(frieze())\033[37m  \033[1mDay $n                          \033[m")
@@ -54,6 +57,10 @@ end
 
 macro day(n::Int)
     decorated_day(n)
+end  
+
+macro test(n::Int)
+    decorated_day(n, true)
 end  
 
 macro runall()

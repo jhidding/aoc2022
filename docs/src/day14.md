@@ -82,7 +82,7 @@ function main(inp::IO, out::IO)
     while drop_grain_of_sand(cave)
         count += 1
     end
-    # println(out, cave)
+    println(out, cave)
     println(out, "Part 1: $count")
     cave = input; count = 1   # off-by-one
     cave.matrix[:,end] .= rock
@@ -90,7 +90,7 @@ function main(inp::IO, out::IO)
           cave.matrix[CartesianIndex((500, 0)) - cave.origin] == air
         count += 1
     end
-    # println(out, cave)
+    println(out, cave)
     println(out, "Part 2: $count")
 end
 
