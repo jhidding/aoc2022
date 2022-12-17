@@ -99,7 +99,7 @@ end
 function pressure(distance::Matrix{Int}, flow_rate::Vector{Int}, time::Int)
     n = size(distance)[1]
     (cost, tgt) = dijkstra(
-        State(1, 1, pack(1:n)), s->isempty(s.closed)||s.time>=(time+1),
+        State(1, 1, pack(2:n)), s->isempty(s.closed)||s.time>=(time+1),
         neighbours(Symmetric(distance)), cost_function(flow_rate), subhash)
 
     maxcost = sum(flow_rate)
